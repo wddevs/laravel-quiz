@@ -1,0 +1,24 @@
+.quiz__item-wrapper--emoji
+  display: flex
+  align-items: center
+
+.quiz__item-emoji
+  font-size: 2.5rem
+  padding: 1rem 1.5rem
+  display: flex
+  padding-right: 0.5rem
+  +mq(991)
+    padding: 0.5rem
+  +mq(414)
+    font-size: 2rem
+    padding: 1rem
+
+.quiz__item-title--emoji
+  font-size: 1.25rem
+  +mq(414)
+    font-size: 1rem
+
+.quiz__wrapper--emoji
+  grid-template-columns: repeat(2, 1fr) !important
+  +mq(576)
+    grid-template-columns: repeat(1, 1fr) !important

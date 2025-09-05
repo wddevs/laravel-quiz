@@ -1,0 +1,129 @@
+.form
+  padding: 48px 0 72px
+
+  &__title
+    max-width: 880px
+    margin: 0 auto 10px
+    text-align: center
+    font-weight: 300
+    line-height: 1.25
+    font-size: 1.75rem
+    +mq(576)
+      font-size: 1.5rem
+    +mq(414)
+      font-size: 1.25rem
+
+  &__subtitle
+    max-width: 820px
+    margin: 0 auto 28px
+    text-align: center
+    color: rgba(255, 255, 255, 0.8)
+    font-size: 0.95rem
+    font-weight: 300
+    +mq(414)
+      font-size: 0.875rem
+
+  &__body
+    max-width: 660px
+    margin: 0 auto
+
+  &__row
+    display: flex
+    flex-direction: column
+    gap: 1.125rem
+
+  &__group
+    display: flex
+    flex-direction: column
+    gap: 8px
+
+  &__label
+    color: rgba(255, 255, 255, 0.7)
+    font-size: 0.75rem
+    letter-spacing: 0.075em
+    text-transform: uppercase
+
+  &__input-wrapper
+    position: relative
+    display: flex
+    align-items: center
+    border: 1px solid #3e5374
+    background: transparent
+    border-radius: 0.25rem
+    height: 64px
+    padding: 0 16px 0 48px
+    transition: border-color 0.25s ease, box-shadow 0.25s ease
+
+    &:hover
+      border-color: rgba(244, 228, 186, 0.55)
+
+    &:focus-within
+      border-color: #f4e4ba
+      box-shadow: 0 0 0 2px rgba(#f4e4ba, 0.35)
+
+  &__icon
+    position: absolute
+    left: 16px
+    opacity: 0.7
+    color: rgba(255, 255, 255, 0.6)
+
+    svg
+      width: 24px
+      height: 24px
+
+  &__input
+    width: 100%
+    background: transparent
+    border: none
+    outline: none
+    color: #fff
+    font-size: 1rem
+    font-weight: 300
+
+    &::placeholder
+      color: rgba(255, 255, 255, 0.55)
+
+  &__status
+    position: absolute
+    right: 14px
+    width: 18px
+    height: 18px
+    border-radius: 50%
+    border: 2px solid rgba(244, 228, 186, 0.45)
+
+  &__actions
+    display: flex
+    justify-content: center
+    margin: 18px 0 14px
+
+  &__privacy
+    display: flex
+    align-items: center
+    gap: 8px
+    max-width: 660px
+    margin: 0 auto
+    color: rgba(255, 255, 255, 0.8)
+    font-size: 0.75rem
+
+    input[type="checkbox"]
+      position: relative
+      width: 18px
+      height: 18px
+      border: 2px solid #f4e4ba
+      border-radius: 4px
+      background: transparent
+      appearance: none
+      cursor: pointer
+
+      &:checked
+        background: #f4e4ba
+
+        &::after
+          content: "✓"
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+          color: #1b2432
+          font-size: 12px
+          font-weight: bold

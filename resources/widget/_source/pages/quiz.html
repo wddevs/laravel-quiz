@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../css/main.css" />
+    <title>Quiz</title>
+  </head>
+  <body>
+    <!-- Питання з сайдбаром-->
+    <div class="quiz__layout">
+      <!-- Обгортка всіх питань-->
+      <div class="quiz__main">
+        <!-- Мобільний блок з консультантом-->
+        <div class="quiz__consultant">
+          <div class="quiz__consultant-profile">
+            <div class="quiz__consultant-avatar">
+              <img src="../../assets/images/manager.webp" alt="Alina" />
+              <div class="quiz__consultant-status"></div>
+            </div>
+            <div class="quiz__consultant-info">
+              <div class="quiz__consultant-name">Аліна</div>
+              <div class="quiz__consultant-role">Помічник нотаріуса</div>
+              <div class="quiz__consultant-message">
+                Доброго дня! Тут вкажіть довіреність яка Вам необхідна
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Блок питань дефолтний-->
+        <div class="quiz__question">
+          <h1 class="quiz__title">Яка довіреність Вам потрібна?</h1>
+          <div class="quiz__wrapper">
+            <div class="quiz__item">
+              <label for="q1-a1">
+                <input type="radio" id="q1-a1" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-4.jpg"
+                        alt="quiz-item-1"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">ЗГОДА НА АВТО</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q1-a2">
+                <input type="radio" id="q1-a2" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-8.jpg"
+                        alt="quiz-item-2"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">
+                        ДОВІРЕНІСТЬ НА НЕРУХОМІСТЬ
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q1-a3">
+                <input type="radio" id="q1-a3" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-2.jpg"
+                        alt="quiz-item-3"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">
+                        ДОВІРЕНІСТЬ НА ПРЕДСТАВЛЕННЯ ІНТЕРЕСІВ
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q1-a4">
+                <input type="radio" id="q1-a4" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-5.jpg"
+                        alt="quiz-item-4"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">
+                        ДОВІРЕНІСТЬ НА РОЗПОРЯДЖЕННЯ БАНКІВСЬКИМ РАХУНКОМ
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q1-a5">
+                <input type="radio" id="q1-a5" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-7.jpg"
+                        alt="quiz-item-5"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">
+                        ЗГОДА БАТЬКІВ НА ВИЇЗД ДИТИНИ
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q1-a6">
+                <input type="radio" id="q1-a6" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-1.jpg"
+                        alt="quiz-item-6"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">
+                        ДОВІРЕНІСТЬ НА ПРОДАЖ МАЙНА
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q1-a7">
+                <input type="radio" id="q1-a7" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-6.jpg"
+                        alt="quiz-item-7"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">
+                        ДОВІРЕНІСТЬ НА ПРОПИСКУ ЧИ ВИПИСКУ
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q1-a8">
+                <input type="radio" id="q1-a8" name="q1" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/quiz-answer/img-3.jpg"
+                        alt="quiz-item-8"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">Інше</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Блок питань з емоджі-->
+        <div class="quiz__question quiz__question--emoji">
+          <h1 class="quiz__title">На який термін Вам потрібна довіреність?</h1>
+          <div class="quiz__wrapper quiz__wrapper--emoji">
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q2-a1">
+                <input type="radio" id="q2-a1" name="q2" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">1️⃣</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        1 рік
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q2-a2">
+                <input type="radio" id="q2-a2" name="q2" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">2️⃣</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        2 роки
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q2-a3">
+                <input type="radio" id="q2-a3" name="q2" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">3️⃣</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        3 роки
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q2-a4">
+                <input type="radio" id="q2-a4" name="q2" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">4️⃣</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        4 роки
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q2-a5">
+                <input type="radio" id="q2-a5" name="q2" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">5️⃣</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        5 років
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q2-a6">
+                <input type="radio" id="q2-a6" name="q2" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">👉🏻</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        Інше...
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Блок питань дефолтний-->
+        <div class="quiz__question">
+          <h1 class="quiz__title">
+            У якому місті Ви можете приїхати до нотаріусу?
+          </h1>
+          <div class="quiz__wrapper">
+            <div class="quiz__item">
+              <label for="q3-a1">
+                <input type="radio" id="q3-a1" name="q3" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/city/Varshava.jpg"
+                        alt="quiz-item-1"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">Варшава</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q3-a2">
+                <input type="radio" id="q3-a2" name="q3" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/city/Cheshun.jpg"
+                        alt="quiz-item-2"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">Щецин</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q3-a3">
+                <input type="radio" id="q3-a3" name="q3" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/city/Lodz.jpg"
+                        alt="quiz-item-3"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">Лодзь</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q3-a4">
+                <input type="radio" id="q3-a4" name="q3" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/city/Vroclav.jpg"
+                        alt="quiz-item-4"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">Вроцлав</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q3-a5">
+                <input type="radio" id="q3-a5" name="q3" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/city/Gdansk.webp"
+                        alt="quiz-item-5"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">Гданськ</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item">
+              <label for="q3-a6">
+                <input type="radio" id="q3-a6" name="q3" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-image">
+                      <img
+                        src="../../assets/images/city/other.jpg"
+                        alt="quiz-item-5"
+                      />
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title">Інше...</h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Блок питань з емоджі-->
+        <div class="quiz__question quiz__question--emoji">
+          <h1 class="quiz__title">
+            Чи маєте зразок довіреності, яка Вам необхідна?
+          </h1>
+          <div class="quiz__wrapper quiz__wrapper--emoji">
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q4-a1">
+                <input type="radio" id="q4-a1" name="q4" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">👍</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        Так, маю
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q4-a2">
+                <input type="radio" id="q4-a2" name="q4" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">😱</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        Ні, не маю
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Блок питань текстовий-->
+        <div class="quiz__question quiz__question--text">
+          <h1 class="quiz__title">На якій мові потрібен документ?</h1>
+          <div class="quiz__wrapper quiz__wrapper--text">
+            <div class="quiz__item quiz__item--text">
+              <label for="q5-a1">
+                <input type="radio" id="q5-a1" name="q5" />
+                <span class="quiz__item-check--text check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--text">
+                        Українська
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--text">
+              <label for="q5-a2">
+                <input type="radio" id="q5-a2" name="q5" />
+                <span class="quiz__item-check--text check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--text">
+                        Польська
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--text">
+              <label for="q5-a3">
+                <input type="radio" id="q5-a3" name="q5" />
+                <span class="quiz__item-check--text check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--text">
+                        Українська та Польська
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--text">
+              <label for="q5-a4">
+                <input type="radio" id="q5-a4" name="q5" />
+                <span class="quiz__item-check--text check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--text">
+                        Англійська
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--text">
+              <label for="q5-a5">
+                <input type="radio" id="q5-a5" name="q5" />
+                <span class="quiz__item-check--text check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--text">
+                        Українська та Англійська
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--text">
+              <label for="q5-a6">
+                <input type="radio" id="q5-a6" name="q5" />
+                <span class="quiz__item-check--text check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--text">
+                        Англійська та Польська
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--text">
+              <label for="q5-a7">
+                <input type="radio" id="q5-a7" name="q5" />
+                <span class="quiz__item-check--text check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper">
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--text">
+                        Не знаю
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Блок питань зі емоджі-->
+        <div class="quiz__question quiz__question--emoji">
+          <h1 class="quiz__title">На коли потрібен готовий документ?</h1>
+          <div class="quiz__wrapper quiz__wrapper--emoji">
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q6-a1">
+                <input type="radio" id="q6-a1" name="q6" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">😛</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        Сьогодні
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q6-a2">
+                <input type="radio" id="q6-a2" name="q6" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">👍</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        Завтра
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q6-a3">
+                <input type="radio" id="q6-a3" name="q6" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">😜</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        Цього тижня
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+            <div class="quiz__item quiz__item--emoji">
+              <label for="q6-a4">
+                <input type="radio" id="q6-a4" name="q6" />
+                <span class="check"></span>
+                <span class="control-label">
+                  <div class="quiz__item-wrapper quiz__item-wrapper--emoji">
+                    <div class="quiz__item-image">
+                      <span class="quiz__item-emoji">🤩</span>
+                    </div>
+                    <div class="quiz__item-text">
+                      <h2 class="quiz__item-title quiz__item-title--emoji">
+                        Не терміново
+                      </h2>
+                    </div>
+                  </div>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Форма зворотного зв'язку -->
+        <div class="form">
+          <h2 class="form__title">
+            Залиште свій номер телефону та отримайте терміни та вартість за
+            Вашим запитом у месенджері
+          </h2>
+          <p class="form__subtitle">
+            Помічний нотаріуса перегляне заповнену Вами інформацію, та напише
+            відповідь Вам протягом 30 хвилин
+          </p>
+
+          <form class="form__body" action="#" method="post">
+            <div class="form__row">
+              <div class="form__group">
+                <label class="form__label" for="form-name">Ім'я</label>
+                <div class="form__input-wrapper">
+                  <span class="form__icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    class="form__input"
+                    type="text"
+                    id="form-name"
+                    name="name"
+                    placeholder="Ваше ім'я"
+                  />
+                </div>
+              </div>
+
+              <div class="form__group">
+                <label class="form__label" for="form-phone">Телефон</label>
+                <div class="form__input-wrapper">
+                  <span class="form__icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  <input
+                    class="form__input"
+                    type="tel"
+                    id="form-phone"
+                    name="phone"
+                    placeholder="Ваш номер телефону"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form__actions">
+              <button type="submit" class="button form__submit">
+                <span>Відправити</span>
+              </button>
+            </div>
+
+            <label class="form__privacy">
+              <input type="checkbox" checked />
+              <span>З політикою конфіденційності ознайомлений(а)</span>
+            </label>
+          </form>
+        </div>
+      </div>
+
+      <!-- Блок Сайдбар-->
+      <div class="quiz__sidebar">
+        <div class="sidebar__discount">
+          <div class="sidebar__discount-text">
+            <span>Твоя знижка:</span>
+            <div class="sidebar__discount-value">
+              <span>0%</span>
+              <svg
+                class="arrow arrow_animation"
+                width="8"
+                height="8"
+                viewBox="0 0 10 10"
+                fill="none"
+              >
+                <path
+                  d="M5 0L0.757355 4.24265L2.17157 5.65686L5 2.82843L7.82843 5.65686L9.24265 4.24265L5 0Z"
+                  fill="#44bc75"
+                />
+                <path
+                  d="M5 4L0.757355 8.24265L2.17157 9.65686L5 6.82843L7.82843 9.65686L9.24265 8.24265L5 4Z"
+                  fill="#44bc75"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar__bonus">
+          <div class="sidebar__bonus-item">
+            <div class="sidebar__bonus-image">
+              <img src="../../assets/images/bonus-first.jpeg" alt="bonus-1" />
+            </div>
+            <div class="sidebar__bonus-text">Працюємо без передплат</div>
+            <div class="sidebar__bonus-lock">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 1C8.676 1 6 3.676 6 7v3H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v3H8V7c0-2.276 1.724-4 4-4z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="sidebar__bonus-item">
+            <div class="sidebar__bonus-image">
+              <img src="../../assets/images/bonus-second.jpeg" alt="bonus-2" />
+            </div>
+            <div class="sidebar__bonus-text">
+              Гарантуємо прийняття в Україні
+            </div>
+            <div class="sidebar__bonus-lock">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 1C8.676 1 6 3.676 6 7v3H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v3H8V7c0-2.276 1.724-4 4-4z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar__chat">
+          <div class="sidebar__chat-profile">
+            <div class="sidebar__chat-avatar">
+              <img src="../../assets/images/manager.webp" alt="Alina" />
+              <div class="sidebar__chat-status"></div>
+            </div>
+            <div class="sidebar__chat-info">
+              <div class="sidebar__chat-name">Аліна</div>
+              <div class="sidebar__chat-role">Помічник нотаріуса</div>
+            </div>
+          </div>
+          <div class="sidebar__chat-message">
+            Доброго дня! Тут вкажіть довіреність яка Вам необхідна
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Блок Футер-->
+    <footer class="quiz__footer">
+      <div class="quiz__footer-content">
+        <div class="quiz__footer-progress">
+          <div class="quiz__footer-step">Крок 1 з 6</div>
+          <div class="quiz__footer-dots">
+            <span class="quiz__footer-dot quiz__footer-dot--active"></span>
+            <span class="quiz__footer-dot"></span>
+            <span class="quiz__footer-dot"></span>
+            <span class="quiz__footer-dot"></span>
+            <span class="quiz__footer-dot"></span>
+            <span class="quiz__footer-dot"></span>
+          </div>
+        </div>
+
+        <div class="quiz__footer-bonus">
+          <div class="quiz__footer-discount">Твоя знижка: 0%</div>
+          <div class="quiz__footer-bonus-item">
+            <img src="../../assets/images/bonus-first.jpeg" alt="bonus-1" />
+            <div class="quiz__footer-bonus-lock">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 1C8.676 1 6 3.676 6 7v3H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v3H8V7c0-2.276 1.724-4 4-4z"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="quiz__footer-bonus-item">
+            <img src="../../assets/images/bonus-second.jpeg" alt="bonus-2" />
+            <div class="quiz__footer-bonus-lock">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 1C8.676 1 6 3.676 6 7v3H5c-1.103 0-2 .897-2 2v9c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2v-9c0-1.103-.897-2-2-2h-1V7c0-3.324-2.676-6-6-6zm0 2c2.276 0 4 1.724 4 4v3H8V7c0-2.276 1.724-4 4-4z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="quiz__footer-navigation">
+          <div class="quiz__footer-buttons">
+            <button class="quiz__footer-btn quiz__footer-btn--prev">
+              <span>←</span>
+            </button>
+            <button class="quiz__footer-btn quiz__footer-btn--next">
+              <span>Далі →</span>
+            </button>
+          </div>
+          <div class="quiz__footer-hint">або натисніть Enter</div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

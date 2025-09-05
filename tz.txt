@@ -1,0 +1,211 @@
+Топ! Нижче — зведене технічне ТЗ + архітектура, ERD, потоки, інтерфейси й план робіт. Я одразу заклав розширюваність (Field-інтерфейси, модульний білінг, подійна аналітика, ShadowDOM/iframe).
+
+# 1) Архітектура (Laravel + Inertia/Vue + Tailwind)
+
+* **Шари**
+
+  * `app/Domain/*` — бізнес-логіка по модулях (Quizzes, Leads, Billing, Analytics, Widget, Integrations, Auth, Admin).
+  * `Actions` (use-cases), `DTO`, `Policies`, `Services`, `Repositories` (інтерфейси + Eloquent реалізації).
+  * Тонкі контролери (`Http/Controllers/*`) викликають `Actions`.
+  * Події (`Events`) → слухачі (`Listeners`) → черги (Redis + Horizon).
+  * Конфіг за фічами: `config/features.php` (команди/воркспейси, шаблони, ShadowDOM/iframe, S3 тощо).
+
+* **Ключові сервіси**
+
+  * `LeadQuotaService` (ролінг 30 днів, овередж-пакети, тригери 80/100%).
+  * `BillingService` (WayForPay: створення платежів, верифікація callback, купони, trial, пророушн).
+  * `AntiSpamService` (honeypot, reCAPTCHA, submission-window = 5 хв по IP/телефону/quiz, rate-limits).
+  * `EventLogger` (сирі події → агрегати).
+  * `WidgetRenderer` (публічний API + проксі налаштувань квіза).
+  * `WebhookDispatcher` (подписані вебхуки з retry/backoff).
+  * `KommoSyncService` (черга + retry, мапінг полів, лог помилок).
+  * `NotificationService` (email/Telegram).
+  * `GeoIpService` (IP→країна/місто) — за можливості.
+
+* **Віджет**
+
+  * Початково **iframe** (стабільна ізоляція стилів/JS, простий postMessage), з опцією **ShadowDOM** через фіч-флаг.
+  * Лоадер з CDN: малий `<script>` (\~<50KB gzip) → підтягує конфіг по `quiz_public_key`, рендерить Vue у iframe/ShadowDOM.
+  * JS-події: `onOpen/onClose/onSubmit/onError` + data-атрибути ініціалізації.
+
+**Вставка (приклад):**
+
+```html
+<script src="https://cdn.yourapp.com/mq.js" async></script>
+<script>
+  window.MQ=window.MQ||{};
+  MQ.init({ key: 'QZ_xxx_public', mode: 'button', selector: '#start-quiz' });
+  MQ.on('submit', (lead) => { /* ... */ });
+</script>
+<button id="start-quiz">Запустити квіз</button>
+```
+
+# 2) ERD (скорочено, з ключовими індексами)
+
+**Auth/Users**
+
+* `users(id, uuid, name, email, email_verified_at, password, google_id, role[super|user], blocked_at)`
+* `personal_access_tokens` (стандарт Sanctum, на майбутнє API keys)
+
+**Billing**
+
+* `plans(id, code, name, monthly_price, lead_limit)` — 50/100/…/5000+
+* `coupons(id, code, percent_off|null, amount_off|null, active, valid_from, valid_to, max_redemptions)`
+* `subscriptions(id, user_id, plan_id, status[active|trialing|past_due|canceled], trial_ends_at, current_period_end, auto_renew, currency)`
+* `payments(id, user_id, subscription_id|null, amount, currency, provider='wayforpay', status, payload, paid_at)`
+* `overage_packs(id, user_id, units, unit_price=0.15, purchased_at, units_remaining)`
+* `usage_snapshots(id, user_id, window_starts_at, window_ends_at, leads_count)`— кеш ролінг-вікна
+
+**Quizzes**
+
+* `quizzes(id, user_id, public_key, name, status[draft|published|archived], test_mode, theme_json, settings_json)`
+* `quiz_versions(id, quiz_id, version, schema_json, published_at)` — іммутабельні публіш-зрізи
+* (у `schema_json`: кроки, питання, типи `fieldType`, опції, валідації, логіка)
+
+**Leads**
+
+* `leads(id, quiz_id, quiz_version_id, user_id, name, phone, is_test, ip, country, city, user_agent, source_button_id, source_container_id, created_at)`
+* `lead_answers(id, lead_id, question_key, value_json)` — одна таблиця для всіх типів
+* `lead_attributes(id, lead_id, utm_source, utm_medium, utm_campaign, utm_term, utm_content, referrer, landing_url, gclid, fbclid, device, os, browser)`
+* Індекси: `(quiz_id, created_at)`, `(user_id, created_at)`, `(phone, created_at)`.
+
+**Analytics (події)**
+
+* `events(id, quiz_id, user_id, type[impression|open|step|submit], step_key|null, ip, ua, created_at)` — сирі
+* `daily_aggregates(id, quiz_id, date, impressions, opens, submits, step_views_json, devices_json, countries_json, utm_json)`
+
+**Integrations**
+
+* `kommo_accounts(id, user_id, domain, token, pipeline_id, status, settings_json, last_sync_at)`
+* `webhooks(id, user_id, name, url, secret, enabled, events_json)`
+* `webhook_logs(id, webhook_id, event_id|null, status, attempts, last_error, created_at)`
+
+**Security**
+
+* `ip_blocks(id, user_id|null, ip, reason, expires_at)`
+* `audit_logs(id, user_id|null, action, entity_type, entity_id, context_json, created_at)`
+
+# 3) Флоу ліда та квот
+
+1. **Widget → Submit** → `AntiSpamService` (honeypot, reCAPTCHA, throttle 1/5 хв по IP/телефону/quiz).
+2. **LeadService::create()**:
+
+   * маркує `is_test` якщо `quiz.test_mode=true` або `?test=1`.
+   * пише lead + answers + attributes; тригерить `LeadCreated`.
+3. **LeadQuotaService::onLeadCreated**:
+
+   * рахує **ролінг 30 днів** (через вікно `now-30d..now` по реальних лідax `is_test=false`).
+   * якщо перевищено план — списує з `overage_packs.units_remaining`; якщо нуль — лід все одно зберігається, але **ставимо прапор `over_limit=true`** й шлемо нотифікації/банер у UI з CTA “докупити 10/20/30”.
+4. **NotificationService**:
+
+   * 80% ліміту → попередження; 100% → критична подія; кожна покупка пакета → підтвердження.
+
+> Політика дублю: кожен сабміт — окремий лід; для super-admin передбачаємо rule-сет (наприклад, “ігнорити дубль по телефону в межах X хв”) — але за замовчуванням **рахуємо всі**.
+
+# 4) Білінг (WayForPay)
+
+* **Підписка**: зберігаємо `subscriptions` з періодами; при оплаті місяця — `payments` зі статусом. (Якщо у W4P є recurring tokens — використовуємо; інакше інвойси + автопам’ятки).
+* **Trial**: `status=trialing`, `trial_ends_at`. При сабміті лідів у тріалі квоти застосовуються як у плані.
+* **Купони**: перевірка валідності (дати/редемпшени), застосування до першого платежу/багатьох — прапор у `coupons`.
+* **Овередж-пакети**: 10/20/30 \* \$0.15 → `overage_packs` зі списанням по кожному новому лідy понад ліміт.
+* **Proration**: при апгрейді серед періоду — дораховуємо частку, одразу переводимо на новий ліміт; даунгрейд — з наступного періоду.
+* **Callback**: верифікація підпису, ідемпотентність; зміна `payments.status`, оновлення `subscriptions`.
+
+# 5) Редактор квізів / типи полів
+
+* **Інтерфейс поля**: `FieldContract { validate($value, $rules), normalize(), toSchema() }`.
+* MVP: `radio, checkbox, checkbox+image, text`.
+* Маски телефонів: маска від країни, валідація `libphonenumber` на бекенді.
+* `Draft/Publish` + **версіювання**: збереження як `quiz_versions.schema_json`; віджет завжди тягне **останній published**.
+* Мультимова/шаблони — місця у схемі й UI зарезервовані (feature-flags).
+
+# 6) Аналітика
+
+* Події: `impression` (видимість віджета), `open`, `step` (з ключем кроку), `submit`.
+* **Агрегація** за кроном (кожні 5 хв + денні підсумки): таблиця `daily_aggregates`.
+* Дашборди: по квізу/періоду/UTM/країні/девайсу; **funnel** із drop-off по кроках; середній час проходження.
+
+# 7) Ліди — UI/експорт/нотіфікації
+
+* Таблиця лідів з фільтрами: діапазон дат, квіз, UTM, test/non-test, over-limit.
+* Експорт CSV/XLSX; масове видалення; пошук по телефону/імені.
+* Ноти: email/Telegram: новий лід, 80/100%, помилки інтеграцій.
+* **Kommo**: налаштування в акаунті (домен, token, pipeline); синк у черзі; мапінг: name, phone, UTM, answers (JSON у примітці або поля).
+
+# 8) Публічні ендпоїнти (widget)
+
+* `GET /api/public/quizzes/{public_key}` → `{version, theme, steps, fields, settings}`
+* `POST /api/public/quizzes/{public_key}/events` → батч сирих подій
+* `POST /api/public/quizzes/{public_key}/leads` → `201 {lead_id, over_limit:false|true}`
+* Всі відповіді кешуються (версії квізів) та підписуються rate-limit’ами (Redis).
+
+# 9) Безпека / антифрод
+
+* reCAPTCHA v3 + honeypot + мінімальний час проходження.
+* Rate-limits (дефолт):
+
+  * events: 60 req / 60s / IP / quiz
+  * submit: 1 / 5 хв / (IP, phone, quiz)
+* `ip_blocks` на рівні акаунта + глобальні у супер-адмінці.
+* Підписані вебхуки (`X-Signature: HMAC-SHA256(secret, body)`), 3→5→10 хв retry.
+
+# 10) Супер-адмінка
+
+* Акаунти, плани, ліміти, платежі, імперсонація.
+* Логи подій/вебхуків/інтеграцій.
+* Глобальні бан-листи IP/телефонів.
+* Майбутні шаблони квізів/тем (feature-flag).
+
+# 11) Технічні деталі та інфра
+
+* **DB**: Postgres (GIN індекси для JSONB у `schema_json`, `answers.value_json`).
+* **Черги**: Redis + Horizon.
+* **Моніторинг**: Sentry + Telescope; `audit_logs` для чутливих змін.
+* **Бекапи**: пропоную — щоденні (7 дн), щотижневі (5 тиж), щомісячні (12 міс).
+* **Статичний скрипт віджета**: CDN; версіонування `mq.js?v=hash`.
+* **S3** — для зображень опцій (коли додамо), поки локально.
+* **CI/CD**: Docker + GitHub Actions; staging після MVP.
+
+# 12) Структура проєкту (скорочено)
+
+```
+app/
+  Domain/
+    Quizzes/{Actions,Services,DTO,Policies,Repositories}
+    Leads/{...}
+    Billing/{...}
+    Analytics/{...}
+    Widget/{...}
+    Integrations/Kommo/{...}
+    Admin/{...}
+resources/js/
+  pages/{Dashboard,Leads,Analytics,Settings,Subscription,QuizBuilder}
+  components/quiz-builder/{FieldRadio.vue, FieldCheckbox.vue, ...}
+  widget/ (окремий build під iframe/ShadowDOM)
+```
+
+# 13) План спринтів (MVP → v1)
+
+**Sprint 1 (фундаменти, 1–2 тиж)**
+Auth (email+pwd+Google), базовий UI, створення квіза (draft/publish, v1 schema), публічний endpoint `GET quiz`, віджет (iframe) з рендером, submit ліда (без білінгу), AntiSpam, події (impression/open/step/submit).
+
+**Sprint 2 (ліди & аналітика, 1–2 тиж)**
+Лістинг лідів з фільтрами/експортом, UTM/device/IP/geo, нотифікації (email/Telegram), сирі події + денні агрегати + графіки/фанели.
+
+**Sprint 3 (білінг, 1–2 тиж)**
+WayForPay інтеграція, плани + trial + купони + пророушн, ролінг-30-днів, 80/100% алерти, покупка овередж-пакетів, банер “перевищено”.
+
+**Sprint 4 (інтеграції & супер-адмін, 1–2 тиж)**
+Kommo (налаштування, синк), вебхуки, супер-адмінка (аканти/платежі/імперсонація/бани), audit logs, Horizon/Sentry.
+
+**Sprint 5 (полірування, 1 тиж)**
+ShadowDOM (фіч-флаг), тест-mode, дод. rate-limits, бекапи, документація SDK (події JS).
+
+# 14) Відкриті моменти (потрібне підтвердження)
+
+* **Email-verification** і **2FA**: вмикаємо? (я б увімкнув верифікацію, 2FA — опційно)
+* **Ретеншн сирих подій**: запропонував 180 днів — ок?
+* **Rate-limits** (див. вище) — ок?
+* **GDPR/експорт даних**: зараз “ні”, але додам базову “згоду на обробку” на фінальному кроці (посилання на політику).
+
+Хочеш — можу одразу накидати **міграції (скелет)** + **інтерфейси `FieldContract`** і **класи сервісів** (порожні методи) під старт розробки.

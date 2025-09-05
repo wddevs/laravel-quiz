@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Widget Example</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #6b7280;
+            margin: 0;
+        }
+        .widget-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .widget-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+        }
+        .info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .info h3 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .feature {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .feature h4 {
+            color: #1f2937;
+            margin-top: 0;
+        }
+        .feature p {
+            color: #6b7280;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Quiz Widget Demo</h1>
+            <p>Інтерактивний віджет для квізів з анімаціями та адаптивним дизайном</p>
+        </div>
+
+        <div class="info">
+            <h3>📋 Інформація про віджет</h3>
+            <p>Цей віджет демонструє повний функціонал системи квізів:</p>
+            <ul>
+                <li>6 кроків з різними типами питань</li>
+                <li>Анімації переходів між кроками</li>
+                <li>Адаптивний дизайн для всіх пристроїв</li>
+                <li>Прогрес-бар з візуальними індикаторами</li>
+                <li>Бічна панель з бонусами та знижками</li>
+                <li>Форма зворотного зв'язку в кінці</li>
+            </ul>
+        </div>
+
+        <div class="widget-container">
+            <iframe 
+                src="http://localhost:5174/?uuid=ecdc23f2-38df-4465-88c9-b92363cb43fb" 
+                class="widget-iframe"
+                title="Quiz Widget">
+            </iframe>
+        </div>
+
+        <div class="info">
+            <h3>🔧 Код для вбудовування</h3>
+            <p>Для вбудовування віджета на ваш сайт використовуйте наступний код:</p>
+            <div class="code-block">
+&lt;iframe 
+  src="http://your-domain.com/embed/?uuid=YOUR_QUIZ_UUID" 
+  width="100%" 
+  height="600"
+  frameborder="0"
+  title="Quiz Widget"&gt;
+&lt;/iframe&gt;
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h4>🎨 Адаптивний дизайн</h4>
+                <p>Автоматично адаптується під різні розміри екранів та пристроїв</p>
+            </div>
+            <div class="feature">
+                <h4>⚡ Швидкі анімації</h4>
+                <p>Плавні переходи між кроками з CSS анімаціями</p>
+            </div>
+            <div class="feature">
+                <h4>📱 Iframe сумісність</h4>
+                <p>Працює в iframe з автоматичним повідомленням про зміни розміру</p>
+            </div>
+            <div class="feature">
+                <h4>🔧 Легка інтеграція</h4>
+                <p>Простий API для отримання конфігурації квізів</p>
+            </div>
+            <div class="feature">
+                <h4>🎯 Різні типи питань</h4>
+                <p>Підтримка текстових, емоджі та зображеннями відповідей</p>
+            </div>
+            <div class="feature">
+                <h4>📊 Аналітика</h4>
+                <p>Відстеження прогресу та збору контактних даних</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Приклад обробки повідомлень від iframe
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'size') {
+                const iframe = document.querySelector('.widget-iframe');
+                if (iframe) {
+                    iframe.style.height = event.data.height + 'px';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
