@@ -1,53 +1,67 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { useQuizStore } from './stores/quiz'
+import { storeToRefs } from 'pinia'
+import {watch, defineAsyncComponent, ref, computed} from 'vue'
+import QuizLayout from './Components/Layouts/QuizLayout.vue'
+import Form from './Components/Quiz/Form.vue'
+import Steps from "./Components/Quiz/Steps.vue";
+import Thanks from "./Components/Quiz/Thanks.vue";
+import TransitionWrapper from './Animations/TransitionWrapper.vue'
 
-const props = defineProps({
-    uuid: { type: String, default: null }
+const props = defineProps({ uuid: { type: String, default: null } })
+
+const quiz = useQuizStore()
+const { quizData, isLoading, isStart, isQuestions, isLeadForm, isThanks, isCompleted, phase } = storeToRefs(quiz)
+
+
+watch(() => props.uuid, (id) => id && quiz.loadQuiz(id), { immediate: true })
+
+// lazy, але без Suspense
+const StartPage = defineAsyncComponent({
+    loader: () => import('./Components/StartPage.vue'),
+    suspensible: false,   // не блокується Suspense
+    delay: 150,           // уникаємо "блимання" лоадера
+    timeout: 10000,       // опційно
 })
 
-const data = ref(null)
-const loading = ref(true)
-const error = ref(null)
 
-// Якщо UUID не передали пропсом, витягнемо з query (?uuid=...)
-const uuid = computed(() => {
-    if (props.uuid) return props.uuid
-    const u = new URL(window.location.href)
-    return u.searchParams.get('uuid')
-})
-
-onMounted(async () => {
-    if (!uuid.value) {
-        error.value = 'UUID is missing'
-        loading.value = false
-        return
-    }
-
-    try {
-        const res = await fetch(`http://laravel-quiz.test/api/v1/quizzes/${uuid.value}/config`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            },
-            credentials: 'same-origin' // якщо інший домен → 'include' і налаштувати CORS
-        })
-
-        if (!res.ok) {
-            const text = await res.text()
-            throw new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`)
-        }
-
-        data.value = await res.json()
-    } catch (e) {
-        console.error(e)
-        error.value = e?.message || 'Failed to load quiz config'
-    } finally {
-        loading.value = false
-    }
-})
 </script>
 
 <template>
-  echo {{props}}
-</template>
+    <div class="quiz-shell">
+        <div v-if="isLoading" class="quiz-loading">Завантаження...</div>
 
+
+        <TransitionWrapper transition-name="fade" mode="out-in">
+            <!-- ключ має змінюватися, щоб Vue запустив перерендер і анімацію -->
+            <div :key="quiz.phase">
+                <StartPage
+                    v-if="isStart && quizData"
+                    :data="quizData"
+
+                />
+
+                <div v-if="isQuestions" class="quiz-container" >
+                    <Steps />                         <!-- показуємо кроки -->
+                </div>
+
+                <div v-if="isLeadForm" class="app__completed">
+                    <Form />
+                </div>
+
+                <div v-if="isThanks" class="app__completed">
+                    <Thanks />
+                </div>
+
+            </div>
+        </TransitionWrapper>
+
+        <!-- Квіз завершено - показуємо результати та форму -->
+
+
+ <div v-if="false" class="quiz-empty">
+ <h2>Квіз недоступний</h2>
+<p>Стартова сторінка недоступна або квіз не знайдено.</p>
+ </div>
+    </div>
+</template>

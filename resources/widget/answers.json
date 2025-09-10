@@ -1,0 +1,101 @@
+{
+    "version": "1",
+    "answers": [
+        {
+            "q": "Яку довіреність Вам потрібно оформити?",
+            "t": "images",
+            "a": "ДОРУЧЕННЯ ПРЕДСТАВЛЕННЯ ІНТЕРЕСІВ"
+        },
+        {
+            "q": "Вкажіть бажаний термін дії довіреності",
+            "t": "emoji",
+            "a": "4 роки"
+        },
+        {
+            "q": "Чи можете Ви приїхати до нотаріуса в Прагу?",
+            "t": "emoji",
+            "a": "Отримати онлайн"
+        },
+        {
+            "q": "У Вас є зразок довіреності яку необхідно оформити?",
+            "t": "emoji",
+            "a": "Ні, не маю."
+        },
+        {
+            "q": "Якою мовою Вам потрібна довіреність?",
+            "t": "variants",
+            "a": "Англійська"
+        },
+        {
+            "q": "Коли бажаєте отримати готову довіреність?",
+            "t": "emoji",
+            "a": "Завтра"
+        }
+    ],
+    "contacts": {
+        "name": "пкпкп55",
+        "text": "555555555555"
+    },
+    "status": "new",
+    "viewed": null,
+    "paid": false,
+    "created": "2025-09-08T13:15:09.024Z",
+    "quizId": "67d1dccf682a2b00263020cb",
+    "extra": {
+        "href": "https://ukr-notar.cz/",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "lng": "uk",
+        "currency": "USD",
+        "notify": "now",
+        "discount": 5,
+        "discountType": "percent",
+        "discountEffect": "increasing",
+        "timezone": 2,
+        "lang": "uk",
+        "paymentEnabled": false,
+        "cookies": {
+            "_fbp": "fb.1.1756719780527.883160957106171040",
+            "_ttp": "01K42AH588M0N9DGDM35J0HZS0_.tt.1",
+            "_ga": "GA1.2.778886595.1756719781"
+        },
+        "ip": "83.22.123.202"
+    },
+    "result": {},
+    "userId": "66902964c96a450026660e5d",
+    "id": "68bed6ddf17f760034820b6e",
+    "projectId": "669029d300ea9d00263d3f88",
+    "delivery": {},
+    "bonuses": {
+        "enabled": true,
+        "items": [
+            {
+                "id": "O8x1rU1anF",
+                "name": "Працюємо без передплат",
+                "link": "",
+                "step": "finish",
+                "image": {
+                    "id": "custom",
+                    "url": "https://cdn.media.marquiz.io/v1/image/upload/nWFPfWYf4eq6khvdbRCovb.jpeg",
+                    "provider": "marquiz-media"
+                }
+            },
+            {
+                "id": "V155lB8813",
+                "name": "Гарантуємо прийняття в Україні",
+                "link": "",
+                "step": "finish",
+                "image": {
+                    "id": "custom",
+                    "url": "https://cdn.media.marquiz.io/v1/image/upload/a7ZgnKGNbxgGx42v5btihn.jpeg",
+                    "provider": "marquiz-media"
+                }
+            }
+        ],
+        "title": "Можливе оформлення день у день"
+    },
+    "preset": "quiz",
+    "form": {
+        "id": "XjhP6snuw5"
+    },
+    "updated": "2025-09-08T13:15:09.025Z"
+}

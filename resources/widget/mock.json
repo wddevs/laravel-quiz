@@ -1,0 +1,370 @@
+{
+    "uuid": "ecdc23f2-38df-4465-88c9-b92363cb43fb",
+    "title": "https:\/\/www.expert-docs.com",
+    "description": "\u041e\u043f\u0438\u0441 \u043a\u0432\u0456\u0437\u0443",
+    "theme": {
+        "primary": "#3B82F6",
+        "bg": "#ffffff",
+        "text": "#0f172a",
+        "font": "Inter",
+        "btnRadius": 12,
+        "inputRadius": 10
+    },
+    "assistant": {
+        "enabled": false,
+        "name": null,
+        "title": null,
+        "avatar": null
+    },
+    "marketing": {
+        "discount": {
+            "type": null,
+            "effect": null,
+            "value": null,
+            "title": null
+        },
+        "bonusesEnabled": false,
+        "bonusesTitle": null,
+        "bonuses": []
+    },
+    "order": [
+        "start",
+        "questions",
+        "leadform",
+        "thanks"
+    ],
+    "startPage": {
+        "title": "https:\/\/www.expert-docs.com",
+        "subtitle": "\u041e\u043f\u0438\u0441 \u043a\u0432\u0456\u0437\u0443",
+        "buttonText": "\u041f\u043e\u0447\u0430\u0442\u0438",
+        "bg": "http:\/\/laravel-quiz.test\/images\/home-bg.jpg",
+        "logo": "http:\/\/laravel-quiz.test\/images\/logo.webp",
+        "enabled": true
+    },
+    "steps": [
+        {
+            "id": 3,
+            "order": 1,
+            "title": "\u042f\u043a\u0430 \u0434\u043e\u0432\u0456\u0440\u0435\u043d\u0456\u0441\u0442\u044c \u0412\u0430\u043c \u043f\u043e\u0442\u0440\u0456\u0431\u043d\u0430?",
+            "type": "radio",
+            "required": false,
+            "help": "Help text",
+            "image": null,
+            "answers": [
+                {
+                    "id": 1,
+                    "order": 1,
+                    "label": "\u0414\u041e\u0412\u0406\u0420\u0415\u041d\u0406\u0421\u0422\u042c \u041d\u0410 \u0410\u0412\u0422\u041e",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 2,
+                    "order": 2,
+                    "label": "\u0414\u041e\u0412\u0406\u0420\u0415\u041d\u0406\u0421\u0422\u042c \u041d\u0410 \u041d\u0415\u0420\u0423\u0425\u041e\u041c\u0406\u0421\u0422\u042c",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 3,
+                    "order": 3,
+                    "label": "\u0414\u041e\u0420\u0423\u0427\u0415\u041d\u041d\u042f \u041f\u0420\u0415\u0414\u0421\u0422\u0410\u0412\u041b\u0415\u041d\u041d\u042f \u0406\u041d\u0422\u0415\u0420\u0415\u0421\u0406\u0412",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 4,
+                    "order": 4,
+                    "label": "\u0414\u041e\u0412\u0406\u0420\u0415\u041d\u0406\u0421\u0422\u042c \u041d\u0410 \u0420\u041e\u0417\u041f\u041e\u0420\u042f\u0414\u0416\u0415\u041d\u041d\u042f \u0411\u0410\u041d\u041a\u0406\u0412\u0421\u042c\u041a\u0418\u041c \u0420\u0410\u0425\u0423\u041d\u041a\u041e\u041c",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 5,
+                    "order": 5,
+                    "label": "\u0417\u0413\u041e\u0414\u0410 \u0411\u0410\u0422\u042c\u041a\u0406\u0412 \u041d\u0410 \u0412\u0418\u0407\u0417\u0414 \u0414\u0418\u0422\u0418\u041d\u0418",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 6,
+                    "order": 6,
+                    "label": "\u0417\u0413\u041e\u0414\u0410 \u041d\u0410 \u041f\u0420\u041e\u0414\u0410\u0416 \u041c\u0410\u0419\u041d\u0410",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 7,
+                    "order": 7,
+                    "label": "\u0417\u0413\u041e\u0414\u0410 \u041d\u0410 \u041f\u0420\u041e\u041f\u0418\u0421\u041a\u0423 \u0427\u0418 \u0412\u0418\u041f\u0418\u0421\u041a\u0423",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 8,
+                    "order": 8,
+                    "label": "\u0406\u043d\u0448\u0435",
+                    "value": null,
+                    "image": null
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "order": 2,
+            "title": "\u041d\u0430 \u044f\u043a\u0438\u0439 \u0442\u0435\u0440\u043c\u0456\u043d \u0412\u0430\u043c \u043f\u043e\u0442\u0440\u0456\u0431\u043d\u0430 \u0434\u043e\u0432\u0456\u0440\u0435\u043d\u0456\u0441\u0442\u044c?",
+            "type": "radio",
+            "required": false,
+            "help": null,
+            "image": null,
+            "answers": [
+                {
+                    "id": 9,
+                    "order": 1,
+                    "label": "1 \u0440\u0456\u043a",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 10,
+                    "order": 2,
+                    "label": "2 \u0440\u043e\u043a\u0438",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 11,
+                    "order": 3,
+                    "label": "3 \u0440\u043e\u043a\u0438",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 12,
+                    "order": 4,
+                    "label": "4 \u0440\u043e\u043a\u0438",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 13,
+                    "order": 5,
+                    "label": "5 \u0440\u043e\u043a\u0456\u0432",
+                    "value": null,
+                    "image": null
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "order": 3,
+            "title": "\u0423 \u044f\u043a\u043e\u043c\u0443 \u043c\u0456\u0441\u0442\u0456 \u0412\u0438 \u043c\u043e\u0436\u0435\u0442\u0435 \u043f\u0440\u0438\u0457\u0445\u0430\u0442\u0438 \u0434\u043e \u043d\u043e\u0442\u0430\u0440\u0456\u0443\u0441\u0443?",
+            "type": "radio",
+            "required": false,
+            "help": null,
+            "image": null,
+            "answers": [
+                {
+                    "id": 14,
+                    "order": 1,
+                    "label": "\u0412\u0430\u0440\u0448\u0430\u0432\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 15,
+                    "order": 2,
+                    "label": "\u0412\u0440\u043e\u0446\u043b\u0430\u0432",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 16,
+                    "order": 3,
+                    "label": "\u041a\u0440\u0430\u043a\u0456\u0432",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 17,
+                    "order": 4,
+                    "label": "\u0429\u0435\u0446\u0438\u043d",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 18,
+                    "order": 5,
+                    "label": "\u041b\u043e\u0434\u0437\u044c",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 19,
+                    "order": 6,
+                    "label": "\u0413\u0434\u0430\u043d\u0441\u044c\u043a",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 20,
+                    "order": 7,
+                    "label": "\u041f\u043e\u0437\u043d\u0430\u043d\u044c",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 21,
+                    "order": 8,
+                    "label": "\u041a\u0430\u0442\u043e\u0432\u0456\u0446\u0435",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 22,
+                    "order": 9,
+                    "label": "\u0416\u0435\u0448\u0443\u0432",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 23,
+                    "order": 10,
+                    "label": "\u0406\u043d\u0448\u0435",
+                    "value": null,
+                    "image": null
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "order": 4,
+            "title": "\u0427\u0438 \u043c\u0430\u0454\u0442\u0435 \u0437\u0440\u0430\u0437\u043e\u043a \u0434\u043e\u0432\u0456\u0440\u0435\u043d\u043e\u0441\u0442\u0456, \u044f\u043a\u0430 \u0412\u0430\u043c \u043d\u0435\u043e\u0431\u0445\u0456\u0434\u043d\u0430?",
+            "type": "radio",
+            "required": false,
+            "help": null,
+            "image": null,
+            "answers": [
+                {
+                    "id": 33,
+                    "order": 1,
+                    "label": "\u0422\u0430\u043a, \u043c\u0430\u044e",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 34,
+                    "order": 2,
+                    "label": "\u041d\u0456, \u043d\u0435 \u043c\u0430\u044e",
+                    "value": null,
+                    "image": null
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "order": 5,
+            "title": "\u041d\u0430 \u044f\u043a\u0456\u0439 \u043c\u043e\u0432\u0456 \u043f\u043e\u0442\u0440\u0456\u0431\u0435\u043d \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442?",
+            "type": "radio",
+            "required": false,
+            "help": null,
+            "image": null,
+            "answers": [
+                {
+                    "id": 35,
+                    "order": 1,
+                    "label": "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 36,
+                    "order": 2,
+                    "label": "\u041f\u043e\u043b\u044c\u0441\u044c\u043a\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 37,
+                    "order": 3,
+                    "label": "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430 \u0442\u0430 \u041f\u043e\u043b\u044c\u0441\u044c\u043a\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 38,
+                    "order": 4,
+                    "label": "\u0410\u043d\u0433\u043b\u0456\u0439\u0441\u044c\u043a\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 39,
+                    "order": 5,
+                    "label": "\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430 \u0442\u0430 \u0410\u043d\u0433\u043b\u0456\u0439\u0441\u044c\u043a\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 40,
+                    "order": 6,
+                    "label": "\u0410\u043d\u0433\u043b\u0456\u0439\u0441\u044c\u043a\u0430 \u0442\u0430 \u041f\u043e\u043b\u044c\u0441\u044c\u043a\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 41,
+                    "order": 7,
+                    "label": "\u041d\u0435 \u0437\u043d\u0430\u044e",
+                    "value": null,
+                    "image": null
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "order": 6,
+            "title": "\u041d\u0430 \u043a\u043e\u043b\u0438 \u043f\u043e\u0442\u0440\u0456\u0431\u0435\u043d \u0433\u043e\u0442\u043e\u0432\u0438\u0439 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442?",
+            "type": "radio",
+            "required": false,
+            "help": null,
+            "image": null,
+            "answers": [
+                {
+                    "id": 42,
+                    "order": 1,
+                    "label": "\u0421\u044c\u043e\u0433\u043e\u0434\u043d\u0456",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 43,
+                    "order": 2,
+                    "label": "\u0417\u0430\u0432\u0442\u0440\u0430",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 44,
+                    "order": 3,
+                    "label": "\u0426\u044c\u043e\u0433\u043e \u0442\u0438\u0436\u043d\u044f",
+                    "value": null,
+                    "image": null
+                },
+                {
+                    "id": 45,
+                    "order": 4,
+                    "label": "\u041d\u0435 \u0442\u0435\u0440\u043c\u0456\u043d\u043e\u0432\u043e",
+                    "value": null,
+                    "image": null
+                }
+            ]
+        }
+    ],
+    "leadForm": null,
+    "thanksPage": {
+        "header": "\u0414\u044f\u043a\u0443\u0454\u043c\u043e!",
+        "content": "",
+        "socials": []
+    }
+}
