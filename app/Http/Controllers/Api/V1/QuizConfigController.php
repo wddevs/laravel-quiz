@@ -14,9 +14,31 @@ class QuizConfigController extends Controller
     {
         $quiz = Quiz::query()
             ->where('uuid',$uuid)
-            ->where('is_active',true)
+//            ->where('is_active',true)
             ->with(['questions.answers'])
-            ->firstOrFail();
+            ->first();
+
+        if (!$quiz) {
+            return response()->json([
+                'status'  => 'not_found',
+                'message' => 'Quiz not found',
+            ], 404);
+        }
+
+        if (!$quiz->is_active) {
+            // повертаємо мінімальні метадані (опційно)
+            return response()
+                ->json([
+                    'status'  => 'inactive',
+                    'message' => 'Цей квіз ще не активовано.',
+                    'meta'    => [
+                        'uuid'        => $quiz->uuid,
+                        'title'       => $quiz->title,
+                        'description' => $quiz->description,
+                    ],
+                ], 423) // Locked
+                ->header('Cache-Control', 'no-store');
+        }
 
         $etag = $this->builder->etag($quiz);
 

@@ -1,0 +1,88 @@
+I reviewed the routes, controllers, models, and migrations to pinpoint mismatches, security gaps, and structural issues. Now I’ll provide focused findings and concrete recommendations.### Ключові знахідки (слабкі місця)
+Безпека віджета/вшивання:
+Widget-скрипт віддається з Access-Control-Allow-Origin: * і без серверної перевірки Origin/Referer; allowlist є тільки на клієнті. Це можна обійти.
+У WidgetScriptController використовується $quiz->domain_allowlist, але такого поля немає у quizzes міграції та моделі. Фактично allowlist завжди порожній → скрипт працює будь-де.
+Перевірка e.origin !== base в postMessage ок, але батьківський домен не фіксується жорстко.
+Валідація/обмеження API:
+В QuizSubmissionController@store UUID не валідується явно (лише firstOrFail), можна додати whereUuid у роутах.
+StoreQuizSubmissionRequest дозволяє великі answers/extra без верхніх меж: ризик великих payload’ів.
+Тротлінг лише throttle:30,1 на endpoint; немає пер-квіз/пер-IP лімітів, захисту від ботів (captcha), rate-limit burst control.
+PII/комплаєнс:
+ПІБ/телефон/емейл зберігаються у відкритому вигляді, логи можуть містити PII. Немає шифрування чутливих полів, політики зберігання, процесів видалення.
+Мульти-тенантність:
+У LeadController@index є фільтр власника для не-superadmin — це добре. Але аналогічні гарантії потрібні всюди, де працюєш з Quiz, QuizSubmission, BlockedIp (перевірити всі контролери/репозиторії).
+blockIp дозволяє ставити блок на IP глобально або для квізу — добре, але немає аудит-логів/причини обов’язкової.
+Узгодженість схеми/коду:
+В WidgetScriptController коментарі і логіка розраховують на поля (напр. domain_allowlist), яких немає в БД/моделі.
+У routes/web.php використовується File::get(...), але File не імпортовано. Це впаде на проді.
+Репозиторій EloquentQuizRepository є, але, імовірно, майже не використовується (ризик дублювання бізнес-логіки між контролерами та репозиторієм).
+Продуктивність/індекси:
+У quiz_submissions є корисні індекси (quiz_id,status, created_at, city). Рекомендовано додати індекс на ip, якщо буде часто використовуватись у фільтрах/блоках.
+blocked_ips має unique(ip,quiz_id) і ip indexed — це добре.
+Тестування/якість:
+Є тести для автентифікації/профілю, але немає тестів для ключових потоків: створення квізів, сабміт лідів, фільтри, блок IP, віджет.
+Немає інтеграційних тестів для API v1.
+DevOps/збірки:
+Комітнуті згенеровані бандли у public/build і resources/widget (окремий фронт). Краще CI/CD з versioned артефактами, щоб уникати ручних конфліктів.
+У репозиторії присутні public/hot і storage/public/images — перевірити .gitignore.
+Конкретні рекомендації
+Безпека віджета і API:
+Додати поле domain_allowlist у quizzes (JSON або TEXT) та cast у Quiz:
+використати для серверної перевірки Origin/Referer у WidgetScriptController@script;
+не віддавати скрипт, якщо домен не в allowlist; логувати спроби.
+У routes/web.php додати ->whereUuid('uuid') для /widget/{uuid} (вже є — ок) і для API також додати whereUuid.
+Додати config/cors.php з allowlist на основі domain_allowlist для API шляхів api/v1/*. Мінімізувати * в CORS.
+Підсилити rate limiting:
+пер-IP та пер-quiz: напр. throttle:ip_quiz,60,1 з кастомним RateLimiter у AppServiceProvider.
+вимкнути відповідь із зайвими деталями при блокуванні (лише код/мінімум інформації).
+Додати опціональну CAPTCHA (hCaptcha/ReCAPTCHA) для сабмітів.
+PII/комплаєнс:
+Шифрувати чутливі поля в quiz_submissions (contact_*) через касти encrypted:... або власні касти, продумати політику зберігання (ретеншн 90/180 днів).
+Маскувати PII у логах, додати фільтри у logging.php/AppServiceProvider для request payload.
+Узгодити схему та код:
+Додати міграцію для quizzes.domain_allowlist і Quiz::$casts['domain_allowlist'=>'array'].
+Імпортувати use Illuminate\Support\Facades\File; у routes/web.php.
+Звести доступ до даних через репозиторій (EloquentQuizRepository) або видалити його, щоб уникнути дублю. Якщо лишаєте — перенести бізнес-логіку створення/оновлення квізів із контролерів у репозиторій/сервіси.
+Надійність API:
+У StoreQuizSubmissionRequest:
+обмежити розмір масивів: answers|max:50, answers.*.a → string|max:2000 або array|max:20;
+додати rule на сумарний розмір payload (custom rule) і HTTP body size на рівні веб-сервера;
+перевіряти extra.href як валідний URL.
+У QuizSubmissionController:
+нормалізувати referrer/source_url до хоста; зберігати окремо source_host з індексом;
+додати try/catch із метриками, але без логування повного payload.
+Мульти-тенантність/авторизація:
+Гарантувати перевірки власника у всіх діях над Quiz, QuizSubmission, BlockedIp.
+Для blockIp:
+робити обов’язковою reason, писати у аудит-лог;
+додати політику/Policy на блок.
+Розглянути teams із spatie/laravel-permission якщо плануються організації.
+Продуктивність:
+Додати індекс на quiz_submissions.ip і, за потреби, на source_host.
+Для сторінок з великими вибірками додати select([...]) тільки потрібних колонок.
+Кешувати Quiz конфіг (включно з allowlist) на короткий час у контролері віджета.
+Віджет/UX:
+Додати параметри theme, lang, v у iFrame — уже прокидаються; підтримати їх на боці resources/widget/App.vue.
+Версіонувати ресурс віджета: завжди вимагати ?v= та виставляти довгі кеші.
+Додати безпечний канал подій: прокидати parentOrigin і перевіряти його всередині віджета перед postMessage.
+Тестування:
+Додати інтеграційні тести:
+API: успішний сабміт, перевищення rate limit, блок IP, великі payload’и, валідація.
+Widget: доступ з дозволеного/забороненого домену (імітувати заголовки).
+Leads: фільтри status/quiz_id/city/time, мультитенантність.
+Додати smoke-тести на репозиторій квізів (якщо лишається).
+Репозиторій/код-стайл:
+Відчистити репозиторій від згенерованих артефактів (public/build, public/hot, storage/public/images) через .gitignore.
+Налаштувати CI: статичний аналіз (Larastan), Pint, тести, build фронта, деплой артефактів.
+Швидкі виправлення (high impact, low effort)
+Додати use Illuminate\Support\Facades\File; у routes/web.php.
+У routes/api.php додати ->whereUuid('uuid') до маршрутів v1.
+Додати індекс на quiz_submissions.ip.
+Додати міграцію quizzes.domain_allowlist + використання на сервері у WidgetScriptController.
+Зменшити поверхню CORS: прибрати * у віджеті, повернути конкретний Origin якщо в allowlist.
+Якщо хочеш, можу одразу:
+створити міграцію/касти для domain_allowlist;
+виправити імпорт File;
+додати whereUuid у маршрути API;
+посилити StoreQuizSubmissionRequest правилами;
+додати індекс quiz_submissions.ip.

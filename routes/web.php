@@ -8,6 +8,8 @@ use App\Http\Controllers\Client\DashboardController as ClientDashboardController
 use App\Http\Controllers\Client\QuizController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\WidgetScriptController;
+use App\Http\Controllers\LeadController;
+use App\Http\Controllers\User\AssetController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -32,6 +34,11 @@ Route::middleware(['auth','verified','role:client'])
         Route::delete('/dashboard/quizzes/{quiz}', [QuizController::class,'destroy'])->name('quizzes.destroy');
         Route::put('/dashboard/quizzes/{quiz}', [QuizController::class,'update'])->name('quizzes.update');
         Route::post('/admin/upload', UploadController::class)->name('admin.upload');
+
+        Route::get('/leads',[LeadController::class,'index'])->name('leads.index');
+        Route::get('/leads/{uuid}',[LeadController::class,'show'])->name('leads.show');
+        Route::delete('/leads/{uuid}',[LeadController::class,'destroy'])->name('leads.destroy');
+        Route::post('/leads/{uuid}/block-ip',[LeadController::class,'blockIp'])->name('leads.blockIp');
     });
 
 Route::middleware(['web'])->group(function () {
@@ -42,6 +49,12 @@ Route::middleware(['web'])->group(function () {
     Route::get('/embed/{any?}', function () {
         return File::get(public_path('embed/index.html'));
     })->where('any', '.*');
+});
+
+Route::middleware(['auth'])->prefix('user/assets')->name('user.assets.')->group(function () {
+    Route::get('/', [AssetController::class, 'index'])->name('index');
+    Route::post('/', [AssetController::class, 'store'])->name('store');
+    Route::delete('{asset}', [AssetController::class, 'destroy'])->name('destroy');
 });
 
 Route::middleware('auth')->group(function () {

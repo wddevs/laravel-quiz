@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useQuizStore } from '../../stores/quiz.js'
 
 const quiz = useQuizStore()
-const { quizData, answers } = storeToRefs(quiz)
+const { quizData, answers, totalSteps } = storeToRefs(quiz)
 
 /** theme */
 const theme = computed(() => quizData.value?.theme || {})
@@ -27,17 +27,37 @@ const discountCfg = computed(() => marketing.value?.discount || null)
 
 const answeredCount = computed(() => Object.keys(answers.value || {}).length)
 
+const maxPercent = computed(() => {
+    const v = Number(discountCfg.value?.value ?? 0)
+    return Number.isFinite(v) ? v : 0
+})
+
+/* крок знижки: max / totalSteps (захист від ділення на 0) */
+const stepGain = computed(() => {
+    const steps = Number(totalSteps.value || 0)
+    if (!steps || !maxPercent.value) return 0
+    return maxPercent.value / steps
+})
+
 const discountValue = computed(() => {
     const cfg = discountCfg.value
-    if (!cfg || !cfg.value) return 0
-    const max = Number(cfg.value) || 0
+    if (!cfg || !maxPercent.value) return 0
+
     if (cfg.type === 'percent') {
-        // effect: increasing — як у тебе: 2% за крок, але не більше max
-        if (cfg.effect === 'increasing') return Math.min(answeredCount.value * 2, max)
-        return max
+        if (cfg.effect === 'increasing') {
+            const raw = answeredCount.value * stepGain.value
+            const rounded = Math.round(raw)
+            return Math.min(Math.max(rounded, 0), maxPercent.value)
+        }
+        return maxPercent.value
+    }
+
+    if (cfg.type === 'fixed') {
+        return maxPercent.value;
     }
     return 0
 })
+
 const hasDiscount = computed(() => discountValue.value > 0)
 const discountTitle = computed(() => discountCfg.value?.title || 'Ваша знижка')
 
@@ -74,12 +94,13 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
 
 <template>
     <div class="quiz__thanks" :style="cssVars">
+
         <article class="thank-page">
             <div class="thank-page__content">
                 <!-- LEFT -->
                 <div class="thank-page__col thank-page__col_left">
-                    <p class="title thank-page__title">{{ header }}</p>
-                    <p class="subtitle thank-page__subtitle">{{ content }}</p>
+                    <p class="title thank-page__title" v-if="header">{{ header }}</p>
+                    <p class="subtitle thank-page__subtitle" v-if="content">{{ content }}</p>
 
                     <!-- socials from config -->
                     <div class="thank-page__socials" v-if="socialLinks.length">
@@ -122,7 +143,7 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
                                     :href="normHref(b.link)"
                                     target="_blank"
                                     rel="noopener"
-                                    :style="b.image?.url ? { backgroundImage: `url(${b.image.url})` } : {}"
+                                    :style="b.image ? { backgroundImage: `url(${b.image})` } : {}"
                                 >
                                     <div class="bonus__layer"></div>
                                     <span class="bonus__text">{{ b.name }}</span>
@@ -428,14 +449,17 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
     background-size: 4.375rem;
     border-radius: .3125rem;
     background-repeat: no-repeat;
-    background-position: 10% .625rem;
+    background-position: center;
+    background-size: cover;
     -webkit-box-shadow: .1187rem .4188rem .4375rem 0 rgba(0,0,0,.1);
-    box-shadow: .1187rem .4188rem .4375rem 0 rgba(0,0,0,.1)
+    box-shadow: .1187rem .4188rem .4375rem 0 rgba(0,0,0,.1);
+    padding-bottom: 28%;
 }
 
 .bonus__layer {
     background: -webkit-gradient(linear,left top,right top,from(rgba(0,0,0,.1)),to(rgba(0,0,0,.55)));
-    background: linear-gradient(90deg,rgba(0,0,0,.1),rgba(0,0,0,.55))
+    background: linear-gradient(90deg,rgba(0,0,0,.1),rgba(0,0,0,.55));
+    z-index: 10;
 }
 
 .bonus__layer,.bonus__lock {
@@ -529,7 +553,8 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
     max-width: 66%;
     text-align: right;
     word-break: break-word;
-    text-shadow: .0625rem .0625rem .125rem rgba(0,0,0,.2)
+    text-shadow: .0625rem .0625rem .125rem rgba(0,0,0,.2);
+    z-index: 20;
 }
 
 @media (max-width: 819px) {

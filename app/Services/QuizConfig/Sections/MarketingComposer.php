@@ -25,6 +25,7 @@ class MarketingComposer implements SectionComposer
 
         return [
             'discount' => [
+                'enabled'=> (bool) Arr::get($settings,'marketing.discount.enabled',false),
                 'type'   => Arr::get($settings,'marketing.discount.type', 'percent'),
                 'effect' => Arr::get($settings,'marketing.discount.effect', 'increasing'),
                 'value'  => Arr::get($settings,'marketing.discount.value', 10),

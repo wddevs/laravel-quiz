@@ -46,6 +46,12 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Quizzes
                                 </NavLink>
+                                <NavLink
+                                    :href="route('leads.index')"
+                                    :active="route().current('leads.index')"
+                                >
+                                    Leads
+                                </NavLink>
                             </div>
                         </div>
 

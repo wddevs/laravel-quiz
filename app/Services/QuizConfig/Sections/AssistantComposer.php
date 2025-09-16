@@ -10,15 +10,16 @@ class AssistantComposer implements SectionComposer
 {
     public function compose(Quiz $quiz, array $settings): array
     {
-        $avatar = Arr::get($settings,'assistant.avatar', '/images/manager.webp');
+        $avatar = Arr::get($settings,'assistant.avatar', false);
+
         if ($avatar && !str_starts_with($avatar,'http')) {
             $avatar = asset($avatar);
         }
 
         return [
-            'enabled' => (bool) Arr::get($settings,'assistant.enabled',true),
+            'enabled' => (bool) Arr::get($settings,'assistant.enabled',false),
             'name'    => Arr::get($settings,'assistant.name', 'Менеджер'),
-            'title'   => Arr::get($settings,'assistant.title', 'Помічник нотаріуса'),
+            'title'   => Arr::get($settings,'assistant.title', false),
             'avatar'  => $avatar,
         ];
     }

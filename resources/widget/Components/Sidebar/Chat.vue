@@ -8,9 +8,9 @@ const quiz = useQuizStore()
 const { quizData, isQuestions, currentStepData } = storeToRefs(quiz)
 
 const assistant = computed(() => quizData.value?.assistant || {})
-const avatar = computed(() => assistant.value?.avatar || '/fallback-manager.png')
-const name   = computed(() => assistant.value?.name   || 'Менеджер')
-const title  = computed(() => assistant.value?.title  || 'Помічник')
+const avatar = computed(() => assistant.value?.avatar || false)
+const name   = computed(() => assistant.value?.name   || false)
+const title  = computed(() => assistant.value?.title  || false)
 
 const isAssistantVisible = computed(() => !!assistant.value?.enabled)
 
@@ -30,13 +30,13 @@ const messageKey = computed(() => `step-${currentStepData.value?.id || 'none'}`)
 <template>
     <div class="sidebar__chat" v-if="showWidget">
         <div class="sidebar__chat-profile">
-            <div class="sidebar__chat-avatar">
-                <img :src="avatar" :alt="name" />
+            <div class="sidebar__chat-avatar" v-if="avatar">
+                <img :src="avatar" :alt="name" v-if="avatar" />
                 <div class="sidebar__chat-status"></div>
             </div>
             <div class="sidebar__chat-info">
-                <div class="sidebar__chat-name">{{name}}</div>
-                <div class="sidebar__chat-role">{{title}}</div>
+                <div class="sidebar__chat-name" v-if="name">{{name}}</div>
+                <div class="sidebar__chat-role" v-if="title">{{title}}</div>
             </div>
         </div>
         <!-- Булька показується тільки якщо в кроку є help -->

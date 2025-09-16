@@ -7,9 +7,14 @@ import './styles.sass'
 const params = new URLSearchParams(location.search)
 const uuid = params.get('uuid') || 'ecdc23f2-38df-4465-88c9-b92363cb43fb'
 
+
+
 const app = createApp(App, { uuid })
 app.use(createPinia())
 app.mount('#app')
+
+// fire-and-forget impression beacon
+
 
 if (window.parent !== window) {
     const sendSize = () => {

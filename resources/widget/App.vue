@@ -11,7 +11,7 @@ import TransitionWrapper from './Animations/TransitionWrapper.vue'
 const props = defineProps({ uuid: { type: String, default: null } })
 
 const quiz = useQuizStore()
-const { quizData, isLoading, isStart, isQuestions, isLeadForm, isThanks, isCompleted, phase } = storeToRefs(quiz)
+const { quizData, isLoading, isStart, isQuestions, isLeadForm, isThanks, isCompleted, phase, isInactive, isNotFound, isError, error  } = storeToRefs(quiz)
 
 
 watch(() => props.uuid, (id) => id && quiz.loadQuiz(id), { immediate: true })
@@ -29,8 +29,22 @@ const StartPage = defineAsyncComponent({
 
 <template>
     <div class="quiz-shell">
-        <div v-if="isLoading" class="quiz-loading">Завантаження...</div>
+        <div v-if="isLoading" class="quiz-loading  p-4">Завантаження...</div>
 
+        <div v-else-if="isInactive" class="quiz-empty p-4">
+            <h2>Квіз недоступний</h2>
+            <p>Цей квіз ще не активовано. Спробуйте пізніше.</p>
+        </div>
+
+        <div v-else-if="isNotFound" class="quiz-empty  p-4">
+            <h2>Квіз не знайдено</h2>
+            <p>Перевірте посилання.</p>
+        </div>
+
+        <div v-else-if="isError" class="quiz-empty  p-4" style="padding: 20px">
+            <h2>Квіз або не доступний або не активований</h2>
+            <p>{{ error }}</p>
+        </div>
 
         <TransitionWrapper transition-name="fade" mode="out-in">
             <!-- ключ має змінюватися, щоб Vue запустив перерендер і анімацію -->
@@ -57,6 +71,10 @@ const StartPage = defineAsyncComponent({
         </TransitionWrapper>
 
         <!-- Квіз завершено - показуємо результати та форму -->
+
+        <div v-if="isCompleted" class="quiz-container">
+
+        </div>
 
 
  <div v-if="false" class="quiz-empty">

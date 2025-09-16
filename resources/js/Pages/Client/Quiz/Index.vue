@@ -24,64 +24,85 @@
                             :key="quiz.id"
                             class="border rounded-lg p-6 hover:shadow-lg transition-shadow"
                         >
-                            <div class="flex justify-between items-start">
+                            <div class="flex justify-between items-start gap-6">
+                                <!-- Ліва колонка: назва/опис + метрики -->
                                 <div class="flex-1">
                                     <h4 class="text-xl font-semibold text-gray-900 mb-2">
                                         {{ quiz.title }}
                                     </h4>
-                                    <p v-if="quiz.description" class="text-gray-600 mb-3">
+                                    <p v-if="quiz.description" class="text-gray-600 mb-4">
                                         {{ quiz.description }}
                                     </p>
 
+                                    <!-- 🟢 Метрики -->
+                                    <div class="grid grid-cols-3 gap-3 max-w-md">
+                                        <div class="flex items-center gap-2 rounded-lg border bg-gray-50 px-3 py-2">
+                                            <span class="text-xs text-gray-500">Покази</span>
+                                            <span class="ml-auto font-semibold tabular-nums">
+            {{ quiz.stats?.impressions ?? 0 }}
+          </span>
+                                        </div>
+                                        <div class="flex items-center gap-2 rounded-lg border bg-gray-50 px-3 py-2">
+                                            <span class="text-xs text-gray-500">Ліди</span>
+                                            <span class="ml-auto font-semibold tabular-nums">
+            {{ quiz.stats?.leads ?? 0 }}
+          </span>
+                                        </div>
+                                        <div class="flex items-center gap-2 rounded-lg border bg-gray-50 px-3 py-2">
+                                            <span class="text-xs text-gray-500">Конверсія</span>
+                                            <span class="ml-auto font-semibold tabular-nums">
+            {{ (quiz.stats?.conversion ?? 0).toFixed(1) }}%
+          </span>
+                                        </div>
+                                    </div>
+                                    <!-- /Метрики -->
                                 </div>
 
-                                <div class="flex-1">
+                                <!-- Права колонка: ембед/копі/кнопки -->
+                                <div class="flex-1 space-y-2">
+                                    <div class="flex items-center gap-2">
+                                        <input
+                                            :value="embedUrl(quiz)"
+                                            class="w-full border rounded px-3 py-2 text-sm bg-gray-50"
+                                            readonly
+                                        />
+                                        <button
+                                            type="button"
+                                            class="px-2 py-2 border rounded text-xs hover:bg-gray-50"
+                                            @click="copy(embedUrl(quiz))"
+                                            title="Скопіювати"
+                                        >
+                                            Copy
+                                        </button>
+                                        <PrimaryLink :href="embedUrl(quiz)" title="Відкрити" target="_blank" rel="noopener">
+                                            Open
+                                        </PrimaryLink>
+                                    </div>
 
-                                    <input
-                                        :value="embedUrl(quiz)"
-                                        class="w-full border rounded px-3 py-2 text-sm bg-gray-50"
-                                        readonly
-                                    />
-                                    <button
-                                        type="button"
-                                        class="px-2 py-2 border rounded text-xs hover:bg-gray-50"
-                                        @click="copy(embedUrl(quiz))"
-                                        title="Скопіювати"
-                                    >
-                                        Copy
-                                    </button>
-                                    <PrimaryLink :href="embedUrl(quiz)" title="Відкрити" target="_blank" rel="noopener">
-                                        Open
-                                    </PrimaryLink>
-
-                                </div>
-
-                                <div class="flex space-x-2 ml-4">
-                                    <PrimaryLink
-                                        :href="route('quizzes.preview', quiz.id)"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607ZM10.5 7.5v6m3-3h-6" />
-                                        </svg>
-
-                                    </PrimaryLink>
-                                    <PrimaryLink
-                                        :href="route('quizzes.edit', quiz.id)"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                                            <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
-                                            <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
-                                        </svg>
-                                    </PrimaryLink>
-                                    <PrimaryButton
-                                        @click="deleteQuiz(quiz.id)"
-                                        variant="danger"
-                                        :href="route('quizzes.destroy', quiz.id)"
-                                    >
-                                        <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-                                            <path fill-rule="evenodd" d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5ZM6.05 6a.75.75 0 0 1 .787.713l.275 5.5a.75.75 0 0 1-1.498.075l-.275-5.5A.75.75 0 0 1 6.05 6Zm3.9 0a.75.75 0 0 1 .712.787l-.275 5.5a.75.75 0 0 1-1.498-.075l.275-5.5a.75.75 0 0 1 .786-.711Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </PrimaryButton>
+                                    <div class="flex items-center gap-2">
+                                        <PrimaryLink :href="route('quizzes.preview', quiz.id)" title="Перегляд">
+                                            <!-- іконка лупи -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197M10.5 7.5v6m3-3h-6" />
+                                            </svg>
+                                        </PrimaryLink>
+                                        <PrimaryLink :href="route('quizzes.edit', quiz.id)" title="Редагувати">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 16 16" fill="currentColor">
+                                                <path d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
+                                                <path d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
+                                            </svg>
+                                        </PrimaryLink>
+                                        <PrimaryButton
+                                            @click="deleteQuiz(quiz.id)"
+                                            variant="danger"
+                                            :href="route('quizzes.destroy', quiz.id)"
+                                            title="Видалити"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 16 16" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5ZM6.05 6a.75.75 0 0 1 .787.713l.275 5.5a.75.75 0 0 1-1.498.075l-.275-5.5A.75.75 0 0 1 6.05 6Zm3.9 0a.75.75 0 0 1 .712.787l-.275 5.5a.75.75 0 0 1-1.498-.075l.275-5.5a.75.75 0 0 1 .786-.711Z" clip-rule="evenodd" />
+                                            </svg>
+                                        </PrimaryButton>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +135,8 @@ const page = usePage()
 const appUrl = page.props.appUrl || window.location.origin
 
 const props = defineProps({
-    quizzes: Object
+    quizzes: Object,
+    filters: Object
 })
 
 function embedUrl(quiz) {

@@ -1,4 +1,6 @@
 <script setup>
+import InputAsset from "@/Components/Form/InputAsset.vue";
+
 const props = defineProps({ answer: { type: Object, required: true } })
 const emit = defineEmits(['update:answer'])
 
@@ -37,9 +39,9 @@ function clearImg () {
     <div class="grid gap-2 mt-1">
         <div class="text-sm">Answer image (optional)</div>
         <div class="flex items-center gap-3">
-            <input type="file" accept="image/*" @change="onFile">
+            <InputAsset label="Question Image" v-model="answer.image_path" value-key="url" />
             <button v-if="answer.image_path" class="px-2 py-1 border rounded" @click="clearImg">Remove</button>
         </div>
-        <img v-if="answer.image_path" :src="'/storage/'+answer.image_path" class="h-16 rounded border" />
+        <img v-if="answer.image_path" :src="answer.image_path" class="h-16 rounded border" />
     </div>
 </template>

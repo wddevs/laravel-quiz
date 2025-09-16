@@ -11,19 +11,49 @@ use App\Http\Requests\QuizStoreRequest;
 use Illuminate\Support\Facades\DB;
 use App\Actions\Quiz\SyncQuestions;
 
+
 class QuizController extends Controller
 {
     public function index(Request $request): Response
     {
+        $time = $request->string('time')->toString() ?: 'all'; // ← дефолт: all
+        $from = match ($time) {
+            '7d'  => now()->subDays(7)->toDateString(),
+            '30d' => now()->subDays(30)->toDateString(),
+            default => null, // all time => без фільтра дати
+        };
+
         $quizzes = Quiz::query()
             ->where('user_id', $request->user()->id)
             ->latest('id')
-            ->select('id','uuid','title','is_active','created_at', 'description')
+            ->select('id','uuid','title','is_active','created_at','description')
             ->paginate(10)
             ->withQueryString();
 
+        $ids = $quizzes->getCollection()->pluck('id')->all();
+
+        $rows = \DB::table('quiz_stats_daily')
+            ->selectRaw('quiz_id, SUM(impressions) impressions, SUM(leads) leads')
+            ->when($from, fn($q) => $q->where('date','>=',$from)) // якщо $from=null → без where по даті
+            ->whereIn('quiz_id', $ids)
+            ->groupBy('quiz_id')
+            ->get();
+
+        $statsByQuiz = $rows->keyBy('quiz_id')->map(function ($r) {
+            $impr = (int)($r->impressions ?? 0);
+            $leads = (int)($r->leads ?? 0);
+            $cr = $impr ? round($leads / $impr * 100, 1) : 0.0;
+            return ['impressions'=>$impr, 'leads'=>$leads, 'conversion'=>$cr];
+        });
+
+        $quizzes->getCollection()->transform(function ($q) use ($statsByQuiz) {
+            $q->stats = $statsByQuiz->get($q->id) ?? ['impressions'=>0,'leads'=>0,'conversion'=>0.0];
+            return $q;
+        });
+
         return Inertia::render('Client/Quiz/Index', [
             'quizzes' => $quizzes,
+            'filters' => ['time' => $time], // повертаємо 'all'
         ]);
     }
 
@@ -35,6 +65,7 @@ class QuizController extends Controller
                 'uuid' => null,
                 'title' => '',
                 'description' => '',
+                'domain_allowlist' => [],
                 'is_active' => true,
                 'settings' => [],
                 'questions' => [],
@@ -51,6 +82,7 @@ class QuizController extends Controller
                 'user_id' => auth()->id(),
                 'title' => $data['title'],
                 'description' => $data['description'] ?? null,
+                'domain_allowlist' => $data['domain_allowlist'] ?? null,
                 'is_active' => $data['is_active'] ?? true,
                 'settings' => $data['settings'] ?? [],
             ]);
@@ -70,10 +102,12 @@ class QuizController extends Controller
     {
         $data = $request->validated();
 
+
         DB::transaction(function () use ($quiz, $data, $action) {
             $quiz->update([
                 'title' => $data['title'],
                 'description' => $data['description'] ?? null,
+                'domain_allowlist' => $data['domain_allowlist'] ?? null,
                 'is_active' => $data['is_active'] ?? true,
                 'settings' => $data['settings'] ?? [],
             ]);

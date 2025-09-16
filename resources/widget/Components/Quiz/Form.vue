@@ -29,10 +29,10 @@
 <template>
     <!-- Форма зворотного зв'язку -->
     <div class="form">
-        <h2 class="form__title">
+        <h2 class="form__title" v-if="header">
             {{ header }}
         </h2>
-        <p class="form__subtitle">
+        <p class="form__subtitle" v-if="content">
             {{ content }}
         </p>
 

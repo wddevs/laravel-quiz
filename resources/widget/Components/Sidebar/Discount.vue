@@ -41,10 +41,14 @@ const discountValue = computed(() => {
         }
         return maxPercent.value
     }
+
+    if (cfg.type === 'fixed') {
+        return maxPercent.value;
+    }
     return 0
 })
 
-const discountTitle = computed(() => discountCfg.value?.title || 'Твоя знижка')
+const discountTitle = computed(() => discountCfg.value?.title || '')
 </script>
 
 <template>

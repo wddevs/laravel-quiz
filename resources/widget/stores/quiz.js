@@ -2,23 +2,33 @@
 import { defineStore } from 'pinia'
 import { ref, computed, shallowRef } from 'vue'
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://laravel-quiz.test/api/v1'
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://quiz.web-deluxe.com/api/v1'
 const TTL_MS = 5 * 60 * 1000 // 5 хв
 
 // stores/quiz.js
 import { getQuizConfig } from '../services/quizApi'
+import { emitOpenOnce } from '../services/events'
 
 export const useQuizStore = defineStore('quiz', () => {
     // --- state
     const quizData = shallowRef(null)           // беремо як є з бекенду
     const status = ref('idle')                  // 'idle'|'loading'|'ready'|'error'
     const error = ref(null)
+
+    const inactive = ref(false)    // <-- NEW
+    const notFound = ref(false)    // <-- NEW
+
     const currentStep = ref(0)
     const answers = ref({})
 
     const isLoading = computed(() => status.value === 'loading')
     const isReady   = computed(() => status.value === 'ready')
     const isError   = computed(() => status.value === 'error')
+
+    const isInactive = computed(() => inactive.value)  // <-- NEW
+    const isNotFound = computed(() => notFound.value)  // <-- NEW
+
+
 
     // --- state
     const phase = ref('start') // 'start' | 'questions' | 'leadform' | 'thanks'
@@ -101,8 +111,25 @@ export const useQuizStore = defineStore('quiz', () => {
             hydrateAnswers(uuid)
         } catch (e) {
             if (e?.name === 'AbortError') return
-            error.value = e?.message || 'Failed to load quiz'
-            status.value = 'error'
+
+            // Важливо: очікуємо e.status із quizApi
+            const st = e?.status ?? e?.response?.status
+
+            if (st === 423 || e?.data?.status === 'inactive') {
+                inactive.value = true
+                // не кешуємо, щоб не зафіксувати "заморожений" стан назавжди
+                _cache.delete(uuid)
+            } else if (st === 404) {
+                notFound.value = true
+                _cache.delete(uuid)
+            } else {
+                error.value = e?.message || 'Failed to load quiz'
+                status.value = 'error'
+            }
+
+            // Якщо inactive/notFound — виводимо “готово”, щоб UI показав екран повідомлення,
+            // а не загальний "error", бо це нормальні очікувані стани
+            if (inactive.value || notFound.value) status.value = 'ready'
         } finally {
             _controller = null
         }
@@ -119,7 +146,10 @@ export const useQuizStore = defineStore('quiz', () => {
         }
     }
 
-    function startQuiz() { phase.value = 'questions' }
+    function startQuiz() {
+        emitOpenOnce({ userInitiated: true })
+        phase.value = 'questions'
+    }
     function goToLeadForm() { phase.value = 'leadform' }
     function goToThanks() { phase.value = 'thanks' }
 
@@ -236,9 +266,10 @@ export const useQuizStore = defineStore('quiz', () => {
 
     return {
         // state
-        quizData, status, error, currentStep, answers, phase,
+        quizData, status, error, currentStep, answers, phase,  inactive, notFound, // <-- export flags
 
         // flags
+       isReady, isError, isInactive, isNotFound, // <-- export computed
         isStart, isQuestions, isLeadForm, isThanks,
 
         // getters

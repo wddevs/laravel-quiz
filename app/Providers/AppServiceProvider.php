@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,5 +36,10 @@ class AppServiceProvider extends ServiceProvider
                 ];
             },
         ]);
+
+        RateLimiter::for('ip-quiz-impressions', function (Request $request) {
+            $uuid = (string) $request->route('uuid');
+            return [Limit::perMinute(60)->by($request->ip().'|'.$uuid)];
+        });
     }
 }

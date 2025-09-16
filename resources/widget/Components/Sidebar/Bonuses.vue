@@ -40,8 +40,8 @@ const href = (u) => (typeof u === 'string' && u ? u : '#')
                 :class="{ 'is-locked': !isCompleted }"
             >
                 <a class="sidebar__bonus-link" :href="href(b.link)" target="_blank" rel="noopener">
-                    <div class="sidebar__bonus-image" :style="b.image?.url ? { backgroundImage: `url(${b.image.url})` } : {}">
-                        <img v-if="!b.image?.url" src="../../assets/images/bonus-placeholder.jpg" alt="" />
+                    <div class="sidebar__bonus-image" :style="b.image ? { backgroundImage: `url(${b.image})` } : {}">
+                        <img v-if="!b.image" :src="b.image" :alt="b.name" />
                     </div>
                     <div class="sidebar__bonus-text">{{ b.name }}</div>
                 </a>

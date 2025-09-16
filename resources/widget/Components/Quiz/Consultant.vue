@@ -8,9 +8,9 @@ const quiz = useQuizStore()
 const { quizData, isQuestions, currentStepData } = storeToRefs(quiz)
 
 const assistant = computed(() => quizData.value?.assistant || {})
-const avatar = computed(() => assistant.value?.avatar || '/fallback-manager.png')
-const name   = computed(() => assistant.value?.name   || 'Менеджер')
-const title  = computed(() => assistant.value?.title  || 'Помічник')
+const avatar = computed(() => assistant.value?.avatar || false)
+const name   = computed(() => assistant.value?.name   || false)
+const title  = computed(() => assistant.value?.title  || false)
 
 const isAssistantVisible = computed(() => !!assistant.value?.enabled)
 
@@ -32,13 +32,13 @@ const messageKey = computed(() => `step-${currentStepData.value?.id || 'none'}`)
     <!-- Мобільний блок з консультантом-->
     <div class="quiz__consultant">
         <div class="quiz__consultant-profile">
-            <div class="quiz__consultant-avatar">
+            <div class="quiz__consultant-avatar" v-if="avatar">
                 <img :src="avatar" :alt="name" />
                 <div class="quiz__consultant-status"></div>
             </div>
             <div class="quiz__consultant-info">
-                <div class="quiz__consultant-name">{{name}}</div>
-                <div class="quiz__consultant-role">{{title}}</div>
+                <div class="quiz__consultant-name" v-if="name">{{name}}</div>
+                <div class="quiz__consultant-role"  v-if="title">{{title}}</div>
                 <TransitionWrapper transition-name="fade" mode="out-in">
                 <div class="quiz__consultant-message" v-if="showHint" :key="messageKey">
                     {{ helpText }}

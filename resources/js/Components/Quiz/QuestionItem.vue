@@ -1,6 +1,7 @@
 <script setup>
 import AnswerItem from './AnswerItem.vue'
 import ImageUpload from './ImageUpload.vue'
+import InputAsset from "@/Components/Form/InputAsset.vue";
 const props = defineProps({ question: { type: Object, required: true } })
 const emit = defineEmits(['update:question'])
 
@@ -47,7 +48,7 @@ function removeAnswer (idx) {
             </label>
         </div>
 
-        <ImageUpload v-model:path="question.image_path" />
+        <InputAsset label="Question Image" v-model="question.image_path" value-key="url" />
 
         <!-- для text-питань відповіді не обов'язкові, але дозволимо додавати (іконки/підказки) -->
         <div v-if="question.type !== 'text'" class="mt-2">

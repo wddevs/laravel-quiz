@@ -2,6 +2,7 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useQuizStore } from '../../stores/quiz.js'
 import { storeToRefs } from 'pinia'
+import FooterProgress from "./FooterProgress.vue";
 
 const quizStore = useQuizStore()
 
@@ -13,17 +14,27 @@ const discountCfg = computed(() => marketing.value?.discount || null)
 
 const answeredCount = computed(() => Object.keys(answers.value || {}).length)
 
+const maxPercent = computed(() => {
+    const v = Number(discountCfg.value?.value ?? 0)
+    return Number.isFinite(v) ? v : 0
+})
+
+const stepGain = computed(() => {
+    const steps = Number(totalSteps.value || 0)
+    return steps ? maxPercent.value / steps : 0
+})
+
 const discountValue = computed(() => {
     const cfg = discountCfg.value
-    if (!cfg || !cfg.value) return 0
-    const max = Number(cfg.value) || 0
-    if (cfg.type === 'percent') {
-        // effect "increasing": +2% за кожну відповідь (адаптуй при потребі)
-        if (cfg.effect === 'increasing') return Math.min(answeredCount.value * 2, max)
-        return max
+    if (!cfg || !maxPercent.value) return 0
+    if (cfg.type === 'percent' && cfg.effect === 'increasing') {
+        const raw = answeredCount.value * stepGain.value
+        return Math.min(Math.round(raw), maxPercent.value)
     }
+    if (cfg.type === 'percent') return maxPercent.value
     return 0
 })
+
 const discountTitle = computed(() => discountCfg.value?.title || 'Твоя знижка')
 const hasDiscount = computed(() => discountValue.value > 0)
 
@@ -106,8 +117,8 @@ onUnmounted(() => {
                         :class="{ 'is-locked': !isCompleted }"
                     >
                         <img
-                            v-if="b.image?.url"
-                            :src="b.image.url"
+                            v-if="b?.image"
+                            :src="b?.image"
                             :alt="b.name"
                             loading="lazy"
                         />
@@ -140,5 +151,7 @@ onUnmounted(() => {
                 <div class="quiz__footer-hint">або натисніть Enter</div>
             </div>
         </div>
+
+        <FooterProgress />
     </footer>
 </template>

@@ -14,7 +14,7 @@ const pageInfo = computed(() => quizData.value?.startPage || {})
 
 /** store (для прогресу — answers/totalSteps) */
 const quiz = useQuizStore()
-const { answers, totalSteps } = storeToRefs(quiz)
+const { answers, totalSteps,  } = storeToRefs(quiz)
 const onStart = () => quiz.startQuiz()
 
 /** --- Discount (marketing.discount) --- */
@@ -58,7 +58,7 @@ const norm = (u) => (typeof u === 'string' && u ? u : undefined)
     <StartPageLayout>
         <div class="home" :style="{ backgroundImage: pageInfo.bg ? 'url(' + pageInfo.bg + ')' : 'none' }">
 
-            <div class="home__mobile-img-wrapper">
+            <div class="home__mobile-img-wrapper" >
                 <img
                     class="home__mobile-img"
                     :src="pageInfo.bg"
@@ -69,24 +69,30 @@ const norm = (u) => (typeof u === 'string' && u ? u : undefined)
             <div class="container">
                 <div class="home__wrapper">
                     <div class="home__inner">
-                        <div class="home__header">
+                        <div class="home__header" v-if="pageInfo.logo || pageInfo.company">
                             <img
                                 :src="pageInfo.logo"
                                 alt="logo"
                                 class="home__logo"
+                                v-if="pageInfo.logo"
                             />
-                            <h1 class="home__title">
-                                {{ pageInfo.title }}
-                            </h1>
+                            <div class="home__company" v-if="pageInfo.company">
+                                {{ pageInfo.company }}
+                            </div>
                         </div>
                         <div class="cta">
-                            <h2 class="cta__title">
+                            <h1 class="cta__title" v-if="pageInfo.title">
+                                {{ pageInfo.title }}
+                            </h1>
+
+                            <h2 class="home__subtitle" v-if="pageInfo.subtitle">
                                 {{ pageInfo.subtitle }}
                             </h2>
-                            <button class="button cta__button" @click="onStart">
+
+                            <button class="button cta__button" @click="onStart" v-if="pageInfo.buttonText">
                                 <span>{{ pageInfo.buttonText }}</span>
                             </button>
-                            <div class="cta__decoration" v-if="hasDiscount">
+                            <div class="cta__decoration" v-if="discountCfg.enabled">
                                 <div class="legal-badge">
                                     <div class="legal-badge__icon">
                                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -136,12 +142,12 @@ const norm = (u) => (typeof u === 'string' && u ? u : undefined)
                         <div class="bonus" v-if="showBonuses">
                             <h3 class="bonus__title">{{ bonusesTitle || 'Бонуси' }}</h3>
 
-                            <div class="bonus__list">
+                            <div class="bonus__list" v-if="bonuses.length">
                                 <div
                                     class="bonus__item"
                                     v-for="(b, i) in bonuses"
                                     :key="i"
-                                    :style="b.image?.url ? { backgroundImage: `url(${b.image.url})` } : {}"
+                                    :style="b?.image ? { backgroundImage: `url(${b.image})` } : {}"
                                 >
                                     <div class="bonus__lock-icon">
                                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

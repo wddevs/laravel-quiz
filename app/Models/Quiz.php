@@ -18,11 +18,13 @@ class Quiz extends Model
         'settings',
         'user_id',
         'uuid',
+        'domain_allowlist',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'settings' => 'array',
+        'domain_allowlist' => 'array',
     ];
 
     protected static function booted(): void

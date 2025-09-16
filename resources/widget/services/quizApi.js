@@ -36,3 +36,13 @@ export async function submitLead(payload, { signal } = {}) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     return res.json().catch(() => ({}))
 }
+
+export class ApiError extends Error {
+    constructor(message, { status, data, etag } = {}) {
+        super(message)
+        this.name = 'ApiError'
+        this.status = status
+        this.data = data
+        this.etag = etag
+    }
+}

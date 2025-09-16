@@ -13,8 +13,8 @@ class StartPageComposer implements SectionComposer
     {
         if (!Arr::get($settings,'start.enabled', true)) return [];
 
-        $bg = Arr::get($settings,'start.bg', '/images/home-bg.jpg');
-        $logo = Arr::get($settings,'start.logo', '/images/logo.webp');
+        $bg = Arr::get($settings,'start.bg', '');
+        $logo = Arr::get($settings,'start.logo', '');
         if ($bg && !str_starts_with($bg,'http'))   $bg   = asset($bg);
         if ($logo && !str_starts_with($logo,'http')) $logo = asset($logo);
 
@@ -22,6 +22,11 @@ class StartPageComposer implements SectionComposer
             'title'      => Arr::get($settings,'start.title', $quiz->title),
             'subtitle'   => Arr::get($settings,'start.subtitle', $quiz->description),
             'buttonText' => Arr::get($settings,'start.buttonText','Почати'),
+
+            'company' => Arr::get($settings,'start.company',''),
+            'phone' => Arr::get($settings,'start.phone',''),
+            'legal' => Arr::get($settings,'start.legal',''),
+
             'bg'         => $bg,
             'logo'       => $logo,
             'enabled'    =>  Arr::get($settings,'start.enabled',true),

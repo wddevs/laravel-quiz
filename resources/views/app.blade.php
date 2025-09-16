@@ -18,6 +18,8 @@
     <body class="font-sans antialiased">
         @inertia
 
-    <script src="http://laravel-quiz.test/widget/ecdc23f2-38df-4465-88c9-b92363cb43fb"></script>
+{{--    <script src="http://laravel-quiz.test/widget/ecdc23f2-38df-4465-88c9-b92363cb43fb"></script>--}}
+
+
     </body>
 </html>

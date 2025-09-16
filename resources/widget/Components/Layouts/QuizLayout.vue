@@ -10,7 +10,7 @@
         <slot />
         </div>
 
-        <Sidebar />-
+        <Sidebar />
     </div>
 
     <Footer />

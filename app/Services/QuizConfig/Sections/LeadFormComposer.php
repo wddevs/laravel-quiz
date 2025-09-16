@@ -30,7 +30,7 @@ class LeadFormComposer implements SectionComposer
                 'key'         => 'name',
                 'label'       => "Ім'я",
                 'type'        => 'name',
-                'placeholder' => 'Олександр',
+                'placeholder' => 'Ваше ім\'я',
                 'required'    => true,
             ],
             [

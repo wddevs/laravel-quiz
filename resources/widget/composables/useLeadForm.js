@@ -7,6 +7,25 @@ const PHONE_RE = /^[+]?[\d\s().-]{7,20}$/
 export function useLeadForm() {
     const quiz = useQuizStore()
 
+    // --- конфіг знижки з маркетингу
+    const discountCfg  = computed(() => quiz.quizData?.marketing?.discount || null)
+    const maxDiscount  = computed(() => Number(discountCfg.value?.value) || 0)
+    const effect       = computed(() => discountCfg.value?.effect || 'increasing') // 'increasing' | 'fixed'
+    const type         = computed(() => discountCfg.value?.type   || 'percent')
+
+    // Скільки кроків/відповідей
+    const totalSteps = computed(() => quiz.quizData?.steps?.length || 0)
+    const answeredCount = computed(() => Object.keys(quiz.answers || {}).length)
+
+    // Головна формула знижки (STEP GAIN): пропорційно кількості відповідей
+    const discountPercent = computed(() => {
+        if (!maxDiscount.value) return 0
+        if (effect.value === 'fixed') return maxDiscount.value
+        if (!totalSteps.value) return 0
+        const p = Math.round((answeredCount.value / totalSteps.value) * maxDiscount.value)
+        return Math.min(p, maxDiscount.value)
+    })
+
     // --- state з конфіга leadForm
     const leadCfg = computed(() => quiz.quizData?.leadForm || {})
     const fields = computed(() => Array.isArray(leadCfg.value.fields) ? leadCfg.value.fields : [])
@@ -91,12 +110,17 @@ export function useLeadForm() {
     // --- extra метадані (на що вистачає фронта)
     function buildExtra() {
         const tz = -new Date().getTimezoneOffset() / 60
+        const qs = new URLSearchParams(location.search)
         return {
             href: typeof location !== 'undefined' ? location.href : '',
             userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
             lang: typeof navigator !== 'undefined' ? (navigator.language || 'uk') : 'uk',
             timezone: tz,
-            // cookies / ip краще додавати на бекенді
+            visitor: qs.get('vid') || '',           // 👈 ДОДАТИ
+            session_id: qs.get('sid') || '',           // 👈 ДОДАТИ
+            parent_origin: qs.get('parentOrigin') || '',           // 👈 ДОДАТИ
+            project: qs.get('project') || '',           // 👈 ДОДАТИ
+            page: qs.get('page') || '',           // 👈 ДОДАТИ
             cookies: {},
         }
     }
@@ -127,6 +151,7 @@ export function useLeadForm() {
             preset: 'quiz',
             form: { id: 'lead-form' },
             updated: new Date().toISOString(),
+            discount_percent: discountPercent.value || 0,
         }
     }
 
@@ -137,6 +162,9 @@ export function useLeadForm() {
         try {
             const payload = buildPayload()
             const resp = await submitLead(payload)
+
+            console.log('Lead submitted, response:', payload)
+
             if (autoAdvance) quiz.goToThanks?.()
             return { ok: true, resp, payload }
         } catch (e) {
