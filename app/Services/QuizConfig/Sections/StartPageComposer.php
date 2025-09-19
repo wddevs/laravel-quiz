@@ -21,7 +21,7 @@ class StartPageComposer implements SectionComposer
         return [
             'title'      => Arr::get($settings,'start.title', $quiz->title),
             'subtitle'   => Arr::get($settings,'start.subtitle', $quiz->description),
-            'buttonText' => Arr::get($settings,'start.buttonText','Почати'),
+            'buttonText' => Arr::get($settings,'start.buttonText','Start'),
 
             'company' => Arr::get($settings,'start.company',''),
             'phone' => Arr::get($settings,'start.phone',''),

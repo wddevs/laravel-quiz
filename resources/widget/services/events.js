@@ -12,7 +12,7 @@ const SID           = QS.get('sid')  || ''
 const PARENT_ORIGIN = QS.get('parentOrigin') || '*'
 
 // API базовий URL (можеш задати через .env → VITE_API_BASE=https://api.example.com/api/v1)
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://laravel-quiz.test/api/v1'
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://quiz.web-deluxe.com/api/v1'
 
 // Додатковий контекст
 const PROJECT = location.host

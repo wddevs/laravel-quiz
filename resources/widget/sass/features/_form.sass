@@ -17,7 +17,7 @@
     max-width: 820px
     margin: 0 auto 28px
     text-align: center
-    color: rgba(255, 255, 255, 0.8)
+    //color: rgba(255, 255, 255, 0.8)
     font-size: 0.95rem
     font-weight: 300
     +mq(414)
@@ -38,7 +38,7 @@
     gap: 8px
 
   &__label
-    color: rgba(255, 255, 255, 0.7)
+    //color: rgba(255, 255, 255, 0.7)
     font-size: 0.75rem
     letter-spacing: 0.075em
     text-transform: uppercase
@@ -47,7 +47,7 @@
     position: relative
     display: flex
     align-items: center
-    border: 1px solid #3e5374
+    border: 1px solid var(--color-alpha2)
     background: transparent
     border-radius: 0.25rem
     height: 64px
@@ -55,17 +55,17 @@
     transition: border-color 0.25s ease, box-shadow 0.25s ease
 
     &:hover
-      border-color: rgba(244, 228, 186, 0.55)
+      border-color: var(--color-alpha)
 
     &:focus-within
-      border-color: #f4e4ba
-      box-shadow: 0 0 0 2px rgba(#f4e4ba, 0.35)
+      border-color: var(--quiz-primary)
+      box-shadow: 0 0 0 2px rgba(var(--quiz-primary), 0.35)
 
   &__icon
     position: absolute
     left: 16px
     opacity: 0.7
-    color: rgba(255, 255, 255, 0.6)
+    color: var(--color-alpha)
 
     svg
       width: 24px
@@ -76,12 +76,12 @@
     background: transparent
     border: none
     outline: none
-    color: #fff
+    color: var(--quiz-text)
     font-size: 1rem
     font-weight: 300
 
     &::placeholder
-      color: rgba(255, 255, 255, 0.55)
+      color: var(--quiz-text)
 
   &__status
     position: absolute
@@ -102,21 +102,21 @@
     gap: 8px
     max-width: 660px
     margin: 0 auto
-    color: rgba(255, 255, 255, 0.8)
+    color: var(--quiz-text)
     font-size: 0.75rem
 
     input[type="checkbox"]
       position: relative
       width: 18px
       height: 18px
-      border: 2px solid #f4e4ba
+      border: 2px solid var(--quiz-primary)
       border-radius: 4px
       background: transparent
       appearance: none
       cursor: pointer
 
       &:checked
-        background: #f4e4ba
+        background: var(--quiz-primary)
 
         &::after
           content: "✓"
@@ -124,6 +124,6 @@
           top: 50%
           left: 50%
           transform: translate(-50%, -50%)
-          color: #1b2432
+          color: var(--color-bg-1)
           font-size: 12px
           font-weight: bold

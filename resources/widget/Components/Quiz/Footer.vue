@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, watch, ref, nextTick } from 'vue'
 import { useQuizStore } from '../../stores/quiz.js'
 import { storeToRefs } from 'pinia'
 import FooterProgress from "./FooterProgress.vue";
@@ -81,6 +81,28 @@ onUnmounted(() => {
     document.removeEventListener('keydown', handleKeydown)
 })
 
+/* ---- анімація для Next ---- */
+const nextBtnProcess = ref(false)
+let processTimer = null
+
+watch(canProceedToNext, async (now, prev) => {
+    if (!prev && now) {
+        nextBtnProcess.value = false
+        await nextTick()
+        nextBtnProcess.value = true
+
+        clearTimeout(processTimer)
+        processTimer = setTimeout(() => {
+            nextBtnProcess.value = false
+        }, 1200) // має збігатися з тривалістю @keyframes
+    }
+})
+
+// при зміні кроку — скидаємо «пульс»
+watch(currentStep, () => {
+    // nextBtnProcess.value = false
+})
+
 </script>
 
 <template>
@@ -142,10 +164,11 @@ onUnmounted(() => {
                         <span>←</span>
                     </button>
                     <button class="quiz__footer-btn quiz__footer-btn--next"
+                            :class="{ process: nextBtnProcess }"
                             :disabled="!canProceedToNext"
                         @click="goNext"
                     >
-                        <span>{{ isCompleted ? 'Завершити' : 'Далі →' }}</span>
+                        <span>{{ isCompleted && ! nextBtnProcess ? 'Завершити' : 'Далі →' }}</span>
                     </button>
                 </div>
                 <div class="quiz__footer-hint">або натисніть Enter</div>

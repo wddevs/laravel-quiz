@@ -285,14 +285,13 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
 
 .thank-page__title {
     margin-bottom: 2.5rem!important;
-    color: var(--color-bg-title,#fff);
+    color: var(--quiz-title,#fff);
     font-size: 2rem;
     margin-top: 0;
 }
 
 .thank-page__subtitle {
     max-width: 50rem;
-    color: var(--color-bg-6,#fff);
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.25;
@@ -306,9 +305,9 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
 }
 
 .thank-page__bonuses-title {
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: .625rem;
-    color: var(--color-bg-text,#fff)
+    color: var(--quiz-title, #fff)
 }
 
 .thank-page__discount {
@@ -357,7 +356,7 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
 }
 
 .thank-page__arrow svg {
-    fill: var(--color-bg-text,#fff);
+    fill: var(--color-lighten);
     width: 1.25rem
 }
 
@@ -374,7 +373,12 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
 
 .thank-page__social svg {
     width: 1.5625rem;
-    fill: var(--light-grey-blue, #b1b5be)
+    fill: var(--color-lighten);
+    transition: fill .15s ease-in-out
+}
+
+.thank-page__social:hover svg {
+    fill: var(--quiz-primary,#fff)
 }
 
 .thank-page__disclaimer-wrapper {
@@ -415,8 +419,8 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
     position: relative;
     width: 100%;
     height: var(--bonus-height);
-    background: -webkit-gradient(linear,left top,left bottom,from(var(--gradient-main)));
-    background: linear-gradient(var(--gradient-main));
+    //background: -webkit-gradient(linear,left top,left bottom,from(var(--gradient-main)));
+    //background: linear-gradient(var(--gradient-main));
     border-radius: .3125rem;
     line-height: 1;
     margin-bottom: .9375rem
@@ -560,7 +564,6 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
 @media (max-width: 819px) {
     .bonus__text {
         min-height:auto;
-        top: auto;
         overflow-wrap: break-word;
         overflow: hidden;
         max-width: 65%;
@@ -944,7 +947,7 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
 .discount-badge:after {
     content: "";
     position: absolute;
-    background-color: #f7cd47;
+    background-color: var(--quiz-primary);
     width: 1rem;
     height: 1rem;
     right: -.375rem;
@@ -962,7 +965,7 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
     height: .3125rem;
     border-radius: 50%;
     background-color: #fff;
-    border: .0625rem solid #c39c23;
+    border: .0625rem solid var(--color-lighten);
     z-index: 3;
     right: 0
 }
@@ -976,7 +979,7 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
     font-size: .6875rem;
     font-weight: 500;
     border-radius: .25rem;
-    background-color: #faf1d6;
+    background-color: var(--color-lighten);
     padding: .25rem .9375rem .25rem .3125rem;
     max-width: 12.5rem;
     white-space: nowrap;
@@ -996,7 +999,7 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
     letter-spacing: normal;
     text-align: left;
     color: #222;
-    border: .0625rem solid #f7cd47
+    border: .0625rem solid var(--color-lighten10);
 }
 
 .discount-badge__value {
@@ -1005,7 +1008,7 @@ const normHref = (u) => (typeof u === 'string' && u ? u : '#')
     vertical-align: middle;
     font-size: .75rem;
     font-weight: 700;
-    background-color: #f7cd47;
+    background-color: var(--color-lighten10);
     padding: .0625rem .75rem 0 .5rem;
     -webkit-box-align: center;
     -ms-flex-align: center;

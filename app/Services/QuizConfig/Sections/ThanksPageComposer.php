@@ -13,20 +13,20 @@ class ThanksPageComposer implements SectionComposer
         if (!Arr::get($settings,'thanks.enabled', true)) return [];
 
         return [
-            'header'  => Arr::get($settings,'thanks.header','Дякуємо!'),
-            'content' => Arr::get($settings,'thanks.content',"Наш консультант у Чехії вже обробляє Вашу заявку та відповість скоро зв'яжеться з Вами Перегляньте наші соціальні мережі"),
+            'header'  => Arr::get($settings,'thanks.header','Thank You!'),
+            'content' => Arr::get($settings,'thanks.content',""),
             'socials' => collect(Arr::get($settings,'thanks.socials',[
                 [
                     "name" => "Instagram",
-                    "link" => "https://www.instagram.com/expert_docs/"
+                    "link" => ""
                 ],
                 [
                     "name" => "Youtube",
-                    "link" => "https://www.youtube.com/@expert-docs"
+                    "link" => ""
                 ],
                 [
                     "name" => "Tiktok",
-                    "link" => "https://www.tiktok.com/@expert_docs1"
+                    "link" => ""
                 ],
             ]))
                 ->map(fn($s)=>['name'=>$s['name']??'','link'=>$s['link']??''])->values(),

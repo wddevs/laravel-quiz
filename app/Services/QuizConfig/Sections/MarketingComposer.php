@@ -29,7 +29,7 @@ class MarketingComposer implements SectionComposer
                 'type'   => Arr::get($settings,'marketing.discount.type', 'percent'),
                 'effect' => Arr::get($settings,'marketing.discount.effect', 'increasing'),
                 'value'  => Arr::get($settings,'marketing.discount.value', 10),
-                'title'  => Arr::get($settings,'marketing.discount.title', 'Ваша знижка'),
+                'title'  => Arr::get($settings,'marketing.discount.title', 'Discount for you!'),
             ],
             'bonusesEnabled' => (bool) Arr::get($settings,'marketing.bonusesEnabled',false),
             'bonusesTitle'   => Arr::get($settings,'marketing.bonusesTitle'),

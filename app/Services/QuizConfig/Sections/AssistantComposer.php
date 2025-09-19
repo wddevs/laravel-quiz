@@ -18,7 +18,7 @@ class AssistantComposer implements SectionComposer
 
         return [
             'enabled' => (bool) Arr::get($settings,'assistant.enabled',false),
-            'name'    => Arr::get($settings,'assistant.name', 'Менеджер'),
+            'name'    => Arr::get($settings,'assistant.name', 'Manager'),
             'title'   => Arr::get($settings,'assistant.title', false),
             'avatar'  => $avatar,
         ];

@@ -71,10 +71,10 @@ const ariaNow = computed(() => (isLoading.value ? 0 : progress.value))
         padding: 0
         margin: 0
         z-index: 101
-        background-image: -webkit-gradient(linear, left top, right top, from(var(--color-darken10)), to(var(--color-lighten10)))
-        background-image: linear-gradient(90deg, var(--color-darken10), var(--color-lighten10))
-        -webkit-box-shadow: inset 0 .125rem .5625rem hsla(0, 0%, 100%, .3), inset 0 -.125rem .375rem rgba(0, 0, 0, .4), .0375rem .1187rem .4375rem 0 var(--color-alpha)
-        box-shadow: inset 0 .125rem .5625rem hsla(0, 0%, 100%, .3), inset 0 -.125rem .375rem rgba(0, 0, 0, .4), .0375rem .1187rem .4375rem 0 var(--color-alpha)
+        background-image: -webkit-gradient(linear, left top, right top, from(var(--color-alpha3)), to(var(--color-alpha3)))
+        //background-image: linear-gradient(90deg, var(--color-darken10), var(--color-lighten10))
+        -webkit-box-shadow: inset 0 .125rem .5625rem hsla(0, 0%, 100%, .3), inset 0 -.125rem .375rem rgba(0, 0, 0, .4), .0375rem .1187rem .4375rem 0 var(--color-alpha2)
+        box-shadow: inset 0 .125rem .5625rem hsla(0, 0%, 100%, .3), inset 0 -.125rem .375rem rgba(0, 0, 0, .4), .0375rem .1187rem .4375rem 0 var(--color-alpha2)
 
         overflow: hidden
         -webkit-transition: all .3s ease
@@ -101,7 +101,7 @@ const ariaNow = computed(() => (isLoading.value ? 0 : progress.value))
             -webkit-transition: all .3s ease
             transition: all .3s ease
             height: 6px
-            background: #ffdd6f
+            background: var(--quiz-primary)
 
 
     @keyframes move

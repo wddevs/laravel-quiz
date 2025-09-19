@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://laravel-quiz.test/api/v1'
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://quiz.web-deluxe.com/api/v1'
 
 
 export async function getQuizConfig(uuid, { etag, signal } = {}) {

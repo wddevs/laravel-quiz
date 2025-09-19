@@ -16,6 +16,7 @@ class QuizConfigBuilder
         private StepComposer    $questions,
         private SectionComposer $leadForm,
         private SectionComposer $thanksPage,
+        private SectionComposer $analytics,
     ) {}
 
     public function build(Quiz $quiz): array
@@ -36,6 +37,8 @@ class QuizConfigBuilder
             'steps'       => $this->questions->compose($quiz, $settings), // лише питання
             'leadForm'    => $this->leadForm->compose($quiz, $settings) ?: null,
             'thanksPage'  => $this->thanksPage->compose($quiz, $settings) ?: null,
+
+            'analytics' => $this->analytics->compose($quiz, $settings) ?: null,
         ];
     }
 

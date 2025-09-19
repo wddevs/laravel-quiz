@@ -75,18 +75,18 @@
 
     // Активний стан (як на прикладі праворуч)
     &:has(input:checked)
-      border-color: #f4e4ba
-      box-shadow: 0 0 0 1px #f4e4ba, 0 0 16px rgba(244, 228, 186, 0.35)
+      border-color: var(--quiz-primary)
+      box-shadow: 0 0 0 1px var(--quiz-primary), 0 0 16px rgba(244, 228, 186, 0.35)
       background: rgba(255, 255, 255, 0.045)
 
       .quiz__item-check--text
-        border-color: #f4e4ba
+        border-color: var(--quiz-primary)
         background: rgba(244, 228, 186, 0.12)
         box-shadow: 0 0 0 4px rgba(244, 228, 186, 0.25), inset 0 0 0 6px #1b2432
         animation: pulse-gold 1.2s ease-in-out infinite
 
         &::after
-          background: #f4e4ba
+          background: (--quiz-primary)
 
   // Адаптивність
   +mq(576)
@@ -107,8 +107,8 @@
 
 @keyframes pulse-gold
   0%
-    box-shadow: 0 0 0 4px rgba(#f4e4ba, 0.2)
+    box-shadow: 0 0 0 4px rgba(var(--quiz-primary), 0.2)
   50%
-    box-shadow: 0 0 0 6px rgba(#f4e4ba, 0.35)
+    box-shadow: 0 0 0 6px rgba(var(--quiz-primary), 0.35)
   100%
-    box-shadow: 0 0 0 4px rgba(#f4e4ba, 0.2)
+    box-shadow: 0 0 0 4px rgba(var(--quiz-primary), 0.2)

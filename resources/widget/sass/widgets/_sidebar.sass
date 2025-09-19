@@ -1,7 +1,7 @@
 .quiz__sidebar
   width: 320px
   height: 100vh
-  background: #1b2432
+  background: var(--color-bg-sidebar)
   border-left: 1px solid rgba(255, 255, 255, 0.1)
   padding: 1rem
   display: flex
@@ -18,11 +18,11 @@
     display: none
 
 .sidebar__discount
-  background: #ffdd6f
+  background: var(--color-alpha8)
   border-radius: 0.75rem
   padding: 1rem
-  color: #4a4a4a
-  box-shadow: 0 0 20px rgba(255, 221, 111, 0.4), 0 4px 15px rgba(255, 221, 111, 0.2)
+  color: var(--quiz-btn-text-color)
+  box-shadow: 0 0 20px var(--color-alpha2), 0 4px 15px var(--color-alpha2)
   transition: all 0.3s ease
 
   +mq(991)
@@ -43,7 +43,7 @@
 
 
   &:hover
-    box-shadow: 0 0 30px rgba(255, 221, 111, 0.6), 0 6px 20px rgba(255, 221, 111, 0.3)
+    box-shadow: 0 0 30px var(--color-alpha2), 0 4px 15px var(--color-alpha2)
     transform: translateY(-2px)
 
   &-text
@@ -105,7 +105,9 @@
   &-image
     width: 100%
     height: 100%
-
+    background-size: cover
+    background-repeat: no-repeat
+    background-position: center
     img
       width: 100%
       height: 100%
@@ -116,8 +118,8 @@
     bottom: 0
     left: 0
     right: 0
-    background: rgba(0, 0, 0, 0.7)
-    color: white
+    background: var(--color-alpha8)
+    color: var(--quiz-btn-text-color)
     padding: 0.75rem
     font-size: 0.875rem
     font-weight: 500
@@ -143,7 +145,7 @@
 
 .sidebar__chat
   margin-top: auto
-  background: rgba(255, 255, 255, 0.05)
+  background: var(--color-alpha8)
   border-radius: 0.75rem
   padding: 1rem
 
@@ -169,6 +171,7 @@
     align-items: center
     gap: 0.75rem
     margin-bottom: 1rem
+    color: var(--color-bg-quiz-alpha55)
 
   &-avatar
     position: relative
@@ -198,16 +201,17 @@
     font-weight: 600
     color: white
     margin-bottom: 0.25rem
+    color: var(--color-text)
 
   &-role
     font-size: 0.75rem
-    color: rgba(255, 255, 255, 0.7)
+    color: var(--color-bg-quiz-alpha55)
 
   &-message
     background: rgba(255, 255, 255, 0.1)
     border-radius: 0.5rem
     padding: 0.75rem
-    color: white
+    color: var(--color-text)
     font-size: 0.875rem
     line-height: 1.4
     font-style: italic

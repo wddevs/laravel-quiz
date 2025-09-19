@@ -3,13 +3,15 @@
   background-size: cover
   background-repeat: no-repeat
 
+  +mq(lg)
+      background: none !important
   .container
     position: relative
     z-index: 2
 
     +mq(820)
         background-image: none
-        background: #1b2432
+        background: var(--quiz-bg)
 
   &::after
     content: ""
@@ -82,7 +84,7 @@
     display: flex
     align-items: center
     gap: 1.5rem
-    justify-content: space-between
+    justify-content: flex-start
 
     +mq(820)
       border-bottom: 0.0625rem solid hsla(0, 0%, 100%, 0.16)
@@ -100,3 +102,12 @@
     font-weight: 300
     +mq(820)
       font-size: 0.875rem
+
+
+  &.has-bg-image
+    .home__company,
+    .cta__title,
+    .home__subtitle,
+    .bonus__title
+        +minq(lg)
+            color: #fff

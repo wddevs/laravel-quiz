@@ -56,7 +56,7 @@ const norm = (u) => (typeof u === 'string' && u ? u : undefined)
 
 <template>
     <StartPageLayout>
-        <div class="home" :style="{ backgroundImage: pageInfo.bg ? 'url(' + pageInfo.bg + ')' : 'none' }">
+        <div class="home" :class="{ 'has-bg-image': pageInfo.bg  }" :style="{ backgroundImage: pageInfo.bg ? 'url(' + pageInfo.bg + ')' : 'none' }">
 
             <div class="home__mobile-img-wrapper" >
                 <img
@@ -140,7 +140,7 @@ const norm = (u) => (typeof u === 'string' && u ? u : undefined)
                         </div>
                         <!-- Бонуси з конфіга -->
                         <div class="bonus" v-if="showBonuses">
-                            <h3 class="bonus__title">{{ bonusesTitle || 'Бонуси' }}</h3>
+                            <h3 class="bonus__title">{{ bonusesTitle || 'Bonuses' }}</h3>
 
                             <div class="bonus__list" v-if="bonuses.length">
                                 <div

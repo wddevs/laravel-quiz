@@ -6,6 +6,7 @@ import InputError from "@/Components/InputError.vue";
 import notify from '@/Plugins/notify'
 import QuizBuilder from '@/Components/Quiz/QuizBuilder.vue'
 import InputAsset from '@/Components/Form/InputAsset.vue'
+import AnalyticsTab from "@/Components/Quiz/AnalyticsTab.vue";
 
 const props = defineProps({ quiz: Object })
 
@@ -14,24 +15,96 @@ function defaultSettings() {
     return {
         order: ['start','questions','leadform','thanks'],
 
-        theme:   { primary:'#3B82F6', bg:'#ffffff', text:'#0f172a', font:'Inter', btnRadius:12, inputRadius:10 },
-        assistant: { enabled:true, name:'Менеджер', title: '', avatar: '' },
+        theme:   {
+            primary:'#000',
+            bg:'#ffffff',
+            text:'#000',
+            title:'#000',
+            font:'Inter',
 
-        marketing: {
-            discount: { type:'percent', effect:'increasing', value:10, title:'Ваша знижка' },
-            bonusesEnabled:false, bonusesTitle:'', bonuses:[]
+            btnRadius:12,
+            btnColor: "#000",
+            btnTextColor: "#fff",
+
+            inputRadius:10
+        },
+        assistant: {
+            enabled: false,
+            name:'Manager',
+            title: '',
+            avatar: ''
         },
 
-        start: { enabled:true, title:'', subtitle:'', buttonText:'Почати', bg:'/images/home-bg.jpg', logo:'/images/logo.webp' },
+        marketing: {
+            discount: {
+                type:'percent',
+                effect:'increasing',
+                value:10,
+                title:'Discount for you!'
+            },
+            bonusesEnabled: false,
+            bonusesTitle:'',
+            bonuses:[]
+        },
 
-        leadform:{ header:'Залиште свій номер телефону та отримайте терміни та вартість…',
-            content:'Помічник перегляне інформацію та відповість протягом 30 хвилин',
-            buttonText:'Відправити', sendOnFirstStep:true,
-            motivationEnabled:false, motivationText:'' },
+        start: {
+            enabled: true,
+            title:'',
+            subtitle:'',
+            buttonText: 'Start',
+            bg:'',
+            logo:''
+        },
 
-        thanks:  { enabled:true, header:'Дякуємо!',
-            content:'Наш консультант вже обробляє вашу заявку…',
-            socials:[{name:'Instagram',link:''},{name:'Youtube',link:''},{name:'Tiktok',link:''}] },
+        leadform:{
+            header: 'Lead form',
+            content: '',
+            buttonText: 'Send',
+            sendOnFirstStep: true,
+            motivationEnabled: false,
+            motivationText: ''
+        },
+
+        thanks:  {
+            enabled: true,
+            header: 'Thank You!',
+            content: '',
+            socials:[
+                {
+                    name:'Instagram',
+                    link:""
+                },
+                {
+                    name:'Youtube',
+                    link:''
+                },
+                {
+                    name:'Tiktok',
+                    link:''
+                }
+            ]
+        },
+
+        analytics: {
+            enabled: false,
+            providers: {
+                ga4: { enabled: false, measurementId: '' },
+                fb:  { enabled: false, pixelId: '' },
+                tt:  { enabled: false, pixelId: '' },
+                gtm: { enabled: false, containerId: '' },
+            },
+            scripts: {
+                head:'',
+                bodyEnd:''
+            },
+            events: {
+                impression:'quiz_impression',
+                start:'quiz_start',
+                step:'quiz_step_view',
+                leadView:'lead_view',
+                leadSubmit:'lead_submit'
+            }
+        },
     }
 }
 
@@ -74,6 +147,7 @@ const tabs = [
     { key:'marketing', label:'Marketing' },
     { key:'theme',     label:'Theme' },
     { key:'order',     label:'Flow / Order' },
+    { key:'analytics',     label:'Analytics' },
 ]
 const activeTab = ref('general')
 
@@ -369,13 +443,30 @@ function submit () {
                         <input type="color" v-model="form.settings.theme.text" class="w-16 h-10 p-0 border rounded" />
                     </label>
                     <label class="block">
+                        <div class="text-sm font-medium">Title</div>
+                        <input type="color" v-model="form.settings.theme.title" class="w-16 h-10 p-0 border rounded" />
+                    </label>
+                    <label class="block">
                         <div class="text-sm font-medium">Font</div>
                         <input v-model="form.settings.theme.font" class="border rounded px-3 py-2 w-full" />
+                    </label>
+                    <div class="grid sm:grid-cols-3 gap-4 sm:col-span-3">
+
+
+                    <label class="block">
+                        <div class="text-sm font-medium">Button Text Color</div>
+                        <input type="color" v-model.number="form.settings.theme.btnTextColor" class="w-16 h-10 p-0 border rounded" />
+                    </label>
+                    <label class="block">
+                        <div class="text-sm font-medium">Button Background Color</div>
+                        <input type="color" v-model.number="form.settings.theme.btnColor" class="w-16 h-10 p-0 border rounded" />
                     </label>
                     <label class="block">
                         <div class="text-sm font-medium">Button radius</div>
                         <input type="number" v-model.number="form.settings.theme.btnRadius" class="border rounded px-3 py-2 w-full" />
                     </label>
+                    </div>
+
                     <label class="block">
                         <div class="text-sm font-medium">Input radius</div>
                         <input type="number" v-model.number="form.settings.theme.inputRadius" class="border rounded px-3 py-2 w-full" />
@@ -394,6 +485,10 @@ function submit () {
                     <div class="text-xs text-gray-500">
                         Напр.: <code>start, questions, leadform, thanks</code>
                     </div>
+                </section>
+
+                <section v-else-if="activeTab==='analytics'" class="grid gap-4">
+                    <AnalyticsTab v-model="form.settings.analytics" />
                 </section>
 
                 <div class="flex gap-2 mt-8">

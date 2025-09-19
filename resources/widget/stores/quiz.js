@@ -1,6 +1,14 @@
 // stores/quiz.js
 import { defineStore } from 'pinia'
 import { ref, computed, shallowRef } from 'vue'
+import {
+    initAnalytics,
+    trackImpression,
+    trackLeadSubmit,
+    trackLeadView,
+    trackStart,
+    trackStep
+} from '../utils/analytics'
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'https://quiz.web-deluxe.com/api/v1'
 const TTL_MS = 5 * 60 * 1000 // 5 хв
@@ -107,7 +115,13 @@ export const useQuizStore = defineStore('quiz', () => {
                 _cache.set(uuid, { data, ts: now, etag })
             }
 
+
+            if (data?.analytics.enabled) {
+                initAnalytics(data?.analytics)
+            }
+
             status.value = 'ready'
+            trackImpression( {uuid} )
             hydrateAnswers(uuid)
         } catch (e) {
             if (e?.name === 'AbortError') return
@@ -139,6 +153,15 @@ export const useQuizStore = defineStore('quiz', () => {
         answers.value[stepId] = answer
         // persistAnswers(quizData.value?.uuid)
 
+        const currentStepAnswers = currentStepData.value?.answers || []
+        const currentStepTitle = currentStepData.value?.title || ""
+
+        const answerLabel = currentStepAnswers.find(a => a.id === answer)?.label || ''
+
+        const stepAnswer =  currentStepTitle + ":" + answerLabel
+
+        trackStep({ stepId, answer, stepAnswer} )
+
         // авто-Next для radio
         const type = currentStepData.value?.type
         if (type === 'radio') {
@@ -147,11 +170,19 @@ export const useQuizStore = defineStore('quiz', () => {
     }
 
     function startQuiz() {
+        trackStart({ uuid: quizData.value?.uuid })
         emitOpenOnce({ userInitiated: true })
+
         phase.value = 'questions'
     }
-    function goToLeadForm() { phase.value = 'leadform' }
-    function goToThanks() { phase.value = 'thanks' }
+    function goToLeadForm() {
+        trackLeadView({ uuid: quizData.value?.uuid })
+        phase.value = 'leadform'
+    }
+    function goToThanks() {
+        trackLeadSubmit({ uuid: quizData.value?.uuid })
+        phase.value = 'thanks'
+    }
 
     function proceed() {
         if (phase.value === 'start') {

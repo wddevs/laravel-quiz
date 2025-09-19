@@ -7,6 +7,8 @@ import Form from './Components/Quiz/Form.vue'
 import Steps from "./Components/Quiz/Steps.vue";
 import Thanks from "./Components/Quiz/Thanks.vue";
 import TransitionWrapper from './Animations/TransitionWrapper.vue'
+import {useTheme} from "./composables/useTheme.js";
+
 
 const props = defineProps({ uuid: { type: String, default: null } })
 
@@ -24,7 +26,7 @@ const StartPage = defineAsyncComponent({
     timeout: 10000,       // опційно
 })
 
-
+useTheme(() => quizData.value?.theme)
 </script>
 
 <template>

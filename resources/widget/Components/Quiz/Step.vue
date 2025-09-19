@@ -37,7 +37,9 @@ const selectAnswer = (answerId) => {
                 <div class="quiz__item"
                      v-for="answer in step.answers"
                      :key="answer.id"
-                     :class="['quiz__item', step?.type && `quiz__item--${step.type}`]"
+                     :class="['quiz__item', step?.type && `quiz__item--${step.type}`, isAnswerSelected(answer.id) ? 'quiz__item--selected' : '',
+                         answer.image ? 'quiz__item--with-image' :''
+                     ]"
                 >
                     <label :for="`answer-${answer.id}`">
                         <input

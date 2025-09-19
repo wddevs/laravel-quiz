@@ -43,9 +43,9 @@ class LeadFormComposer implements SectionComposer
         ];
 
         return [
-            'header'          => Arr::get($settings,'leadform.header','Залиште свій номер телефону та отримайте терміни та вартість за Вашим запитом у месенджері'),
-            'content'         => Arr::get($settings,'leadform.content','Помічний нотаріуса перегляне заповнену Вами інформацію, та напише відповідь Вам протягом 30 хвилин'),
-            'buttonText'      => Arr::get($settings,'leadform.buttonText','Відправити'),
+            'header'          => Arr::get($settings,'leadform.header','Lead Form'),
+            'content'         => Arr::get($settings,'leadform.content',''),
+            'buttonText'      => Arr::get($settings,'leadform.buttonText','Send'),
             'sendOnFirstStep' => (bool) Arr::get($settings,'leadform.sendOnFirstStep', true),
             'fields'          => $fields,
             'motivation'  => [

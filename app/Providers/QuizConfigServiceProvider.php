@@ -12,6 +12,7 @@ use App\Services\QuizConfig\Sections\MarketingComposer;
 use App\Services\QuizConfig\Sections\StartPageComposer;
 use App\Services\QuizConfig\Sections\LeadFormComposer;
 use App\Services\QuizConfig\Sections\ThanksPageComposer;
+use App\Services\QuizConfig\Sections\AnalyticsComposer;
 
 // Steps
 use App\Services\QuizConfig\Sections\QuestionsStepComposer;
@@ -28,6 +29,9 @@ class QuizConfigServiceProvider extends ServiceProvider
         $this->app->bind(LeadFormComposer::class);
         $this->app->bind(ThanksPageComposer::class);
         $this->app->bind(QuestionsStepComposer::class);
+        $this->app->bind(AnalyticsComposer::class);
+
+
 
         $this->app->bind(QuizConfigBuilder::class, function ($app) {
             return new QuizConfigBuilder(
@@ -38,6 +42,7 @@ class QuizConfigServiceProvider extends ServiceProvider
                 questions:   $app->make(QuestionsStepComposer::class),
                 leadForm:    $app->make(LeadFormComposer::class),
                 thanksPage:  $app->make(ThanksPageComposer::class),
+                analytics:   $app->make(AnalyticsComposer::class),
             );
         });
     }
